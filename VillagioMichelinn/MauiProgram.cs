@@ -1,8 +1,9 @@
 ﻿
 using CommunityToolkit.Maui;            // << inicializa o MAUI Community Toolkit
 using Microsoft.Extensions.Logging;
+using VillagioMichelinn;
 
-namespace Teste
+namespace VillagioMichelinn
 {
     public static class MauiProgram
     {

@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Maui.Controls;
 
-namespace Teste
+namespace VillagioMichelinn
 {
     public partial class Reservas : ContentPage
     {

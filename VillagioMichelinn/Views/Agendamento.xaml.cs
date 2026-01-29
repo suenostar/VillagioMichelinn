@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 
-namespace Teste
+namespace VillagioMichelinn
 {
     public partial class Agendamento : ContentPage
     {

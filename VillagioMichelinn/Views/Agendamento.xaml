@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="Teste.Agendamento"
+             x:Class="VillagioMichelinn.Agendamento"
              Title="Agendamento"
              BackgroundColor="White">
 
@@ -675,6 +675,7 @@
                                                 StrokeShape="RoundRectangle 10"
                                                 Padding="10"
                                                 Margin="0,8,0,0">
+                                            
                                             <VerticalStackLayout Spacing="1">
 
                                                 <!--opc1-->
@@ -747,8 +748,7 @@
                                             </VerticalStackLayout>
                                         </Border>
 
-                                        <!-- Só mostrar quando 'Combos' estiver expandido --> c:\users\renan.lnascimento4\source\repos\villagiomichelinn\villagiomichelinn\mauiprogram.cs
-
+                                        <!-- Só mostrar quando 'Combos' estiver expandido --> 
                                         <toolkit:Expander.Triggers>
                                             <DataTrigger TargetType="toolkit:Expander" Binding="{Binding Source={x:Reference expCombos}, Path=IsExpanded}" Value="False">
                                                 <Setter Property="IsVisible" Value="False" />

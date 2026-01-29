@@ -1,4 +1,4 @@
-namespace Teste;
+namespace VillagioMichelinn;
 
 public partial class Pagamento : ContentPage
 {
