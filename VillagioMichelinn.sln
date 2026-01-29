@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VillagioMichelinn", "VillagioMichelinn\VillagioMichelinn.csproj", "{1C1FCD6E-4686-4626-80C5-E125D0901844}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiVillagio", "ApiVillagio\ApiVillagio.csproj", "{57907FDB-DB15-4059-A47E-CB74D179DA38}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C1FCD6E-4686-4626-80C5-E125D0901844}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C1FCD6E-4686-4626-80C5-E125D0901844}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C1FCD6E-4686-4626-80C5-E125D0901844}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C1FCD6E-4686-4626-80C5-E125D0901844}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57907FDB-DB15-4059-A47E-CB74D179DA38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57907FDB-DB15-4059-A47E-CB74D179DA38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57907FDB-DB15-4059-A47E-CB74D179DA38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57907FDB-DB15-4059-A47E-CB74D179DA38}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

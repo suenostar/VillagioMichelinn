@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Teste.Reservas"
+             Title="Reservas">
+
+    <VerticalStackLayout Spacing="10" Padding="20">
+
+        <!-- Logo -->
+        <Image Source="Logo_villagio_v2.png"
+               HeightRequest="150"
+               HorizontalOptions="Center" />
+
+        <!-- Card marrom externo -->
+        <Border
+            BackgroundColor="#B77F61"
+            Stroke="Black"
+            StrokeThickness="1.3"
+            WidthRequest="380"
+            Padding="25"
+            StrokeShape="RoundRectangle 25"
+            HorizontalOptions="Center">
+
+            <VerticalStackLayout Spacing="20">
+
+                <!-- Título -->
+                <Label Text="Suas reservas"
+                       FontFamily="CanvasInline"
+                       FontSize="25"
+                       TextColor="Black"
+                       HorizontalOptions="Start" />
+
+                <!-- Card branco interno (conteúdo da reserva) -->
+                <Border
+                    BackgroundColor="White"
+                    Stroke="Black"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 25"
+                    HeightRequest="250"
+                    Padding="15">
+
+                    <Grid>
+
+                        <!-- Textos da reserva -->
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="valor" FontSize="18" TextColor="Black"/>
+                            <Label Text="data" FontSize="18" TextColor="Black"/>
+                            <Label Text="nome de quem agendou" FontSize="18" TextColor="Black"/>
+                        </VerticalStackLayout>
+
+                        <!-- Botão de menu (⋮) -->
+                        <Label Text="⋮"
+                               FontSize="28"
+                               TextColor="Black"
+                               HorizontalOptions="End"
+                               VerticalOptions="Start">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnMenuClicked"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    </Grid>
+                </Border>
+
+                <!-- Popup: Cancelar reserva? (inicialmente oculto) -->
+                <Border x:Name="CancelCard"
+                        BackgroundColor="White"
+                        Stroke="Black"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 25"
+                        Padding="20"
+                        IsVisible="False"
+                        HorizontalOptions="Center">
+
+                    <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Label Text="Cancelar reserva?"
+                               FontSize="20"
+                               FontFamily="CanvasInline"
+                               HorizontalOptions="Center"
+                               TextColor="Black" />
+
+                        <HorizontalStackLayout Spacing="40" HorizontalOptions="Center">
+                            <!-- NÃO -->
+                            <Button Text="❌"
+                                    FontSize="28"
+                                    BackgroundColor="Transparent"
+                                    TextColor="Red"
+                                    Clicked="OnCancelNo" />
+                            <!-- SIM -->
+                            <Button Text="✔️"
+                                    FontSize="28"
+                                    BackgroundColor="Transparent"
+                                    TextColor="Green"
+                                    Clicked="OnCancelYes" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </Border>
+
+        <Button 
+            Text="Nova reserva"
+            FontFamily="CanvasInline"
+            BackgroundColor="#D9BBAB"
+            TextColor="Black"
+            CornerRadius="25"
+            WidthRequest="220"
+            HeightRequest="55"
+            HorizontalOptions="Center"
+            BorderColor="Black"
+            BorderWidth="2"
+            FontSize="30"
+            Clicked="OnNreservaClicked"/>
+
+    </VerticalStackLayout>
+
+</ContentPage>

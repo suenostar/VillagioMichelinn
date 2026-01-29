@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Teste.Pagamento"
+             Title="Pagamento"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="30" Padding="20" >
+
+            <!-- Logo -->
+            <Image Source="logo_villagio_v2.png"
+                   HeightRequest="150"
+                   HorizontalOptions="Center" />
+
+
+
+            <!-- Quadrado com borda arredondada -->
+            <Border BackgroundColor="White"
+                    Stroke="#B77F61"
+                    StrokeThickness="4"
+                    StrokeShape="RoundRectangle 25"
+                    Padding="20"
+                    WidthRequest="250"
+                    HeightRequest="300"
+                    HorizontalOptions="Center">
+
+                <VerticalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center">
+
+                    <!-- Texto Pix -->
+                    <Label Text="Pix: 54463509874"
+                           FontSize="18"
+                           HorizontalOptions="Center"
+                           TextColor="Black"
+                           FontAttributes="Bold" />
+
+                    <!-- QR Code -->
+
+                    <Image Source="qrcode1.png"
+                           WidthRequest="180"
+                           HeightRequest="180"
+                           HorizontalOptions="Center" 
+                           />
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="Voltar para o inicio"
+                    FontFamily="CanvasInline"
+                    BackgroundColor="#D9BBAB"
+                    TextColor="Black"
+                    CornerRadius="25"
+                    WidthRequest="220"
+                    HeightRequest="55"
+                    HorizontalOptions="Center"
+                    BorderColor="Black"
+                    BorderWidth="2"
+                    FontSize="30"
+                    Clicked="OnInicioClicked"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

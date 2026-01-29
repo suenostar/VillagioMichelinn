@@ -1,0 +1,61 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Teste.MainPage"
+             Title="Cadastro"
+             BackgroundColor="White">
+
+    <VerticalStackLayout Spacing="20" VerticalOptions="Center">
+
+        <!-- Logo -->
+        <Image Source="Logo_villagio_v2.png"
+               HeightRequest="150"
+               HorizontalOptions="Center" />
+
+        <!-- Caixa de seleção -->
+        <Border BackgroundColor="#B77F61"
+                Stroke="Black"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 20"
+                Padding="20"
+                HorizontalOptions="Center">
+
+            <VerticalStackLayout Spacing="15">
+
+                <Label Text="Escolha a opção de cadastro"
+                       FontSize="18"
+                       TextColor="Black"
+                       FontFamily="CanvasInline"
+                       HorizontalOptions="Center" />
+
+                <!-- Botões -->
+                <Button Text="Família"
+                       
+                        FontFamily="SourceSans"
+                        FontSize="18"
+                        BackgroundColor="#8E7C94"
+                        TextColor="Black"
+                        CornerRadius="20"
+                        WidthRequest="200"
+                        HorizontalOptions="Center"
+                        Clicked="OnFamiliaClicked"
+                        BorderColor="#445738"
+                        BorderWidth="2" />
+
+                <Button Text="Agência"
+                       
+                        FontFamily="SourceSans"
+                        FontSize="18"
+                        BackgroundColor="#8E7C94"
+                        TextColor="Black"
+                        CornerRadius="20"
+                        WidthRequest="200"
+                        HorizontalOptions="Center"
+                        Clicked="OnAgenciaClicked"
+                        BorderColor="#445738"
+                        BorderWidth="2" />
+
+            </VerticalStackLayout>
+        </Border>
+
+    </VerticalStackLayout>
+</ContentPage>

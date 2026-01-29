@@ -1,0 +1,94 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Teste.CadastroAgencia"
+             Title="Cadastro Agência"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Center">
+
+            <!-- Logo -->
+            <Image Source="Logo_villagio_v2.png"
+                   HeightRequest="150"
+                   HorizontalOptions="Center" />
+
+            <!-- Título -->
+            <Label Text="Cadastro"
+                   FontFamily="CanvasInline"
+                   FontSize="30"
+                   HorizontalOptions="Center"
+                   TextColor="Black" />
+
+            <!-- Formulário -->
+            <Border BackgroundColor="#B77F61"
+                    Stroke="Black"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20"
+                    Padding="20"
+                    HorizontalOptions="Center">
+
+                <VerticalStackLayout Spacing="15">
+
+                    <!-- Nome -->
+                    <HorizontalStackLayout>
+                        <Label Text="Nome:"  FontSize="18" FontFamily="SourceSans" TextColor="Black" WidthRequest="80" VerticalOptions="Center"/>
+                        <Entry x:Name="NomeEntry" Placeholder="Digite o nome" WidthRequest="200"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Email -->
+                    <HorizontalStackLayout>
+                        <Label Text="Email:" FontSize="18" FontFamily="SourceSans" TextColor="Black" WidthRequest="80" VerticalOptions="Center"/>
+                        <Entry x:Name="EmailEntry" Placeholder="Digite o email" WidthRequest="200" Keyboard="Email"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Telefone -->
+                    <HorizontalStackLayout>
+                        <Label Text="Telefone:" FontSize="18" FontFamily="SourceSans" TextColor="Black" WidthRequest="80" VerticalOptions="Center"/>
+                        <Entry x:Name="TelefoneEntry" Placeholder="Digite o telefone" WidthRequest="200" Keyboard="Telephone"/>
+                    </HorizontalStackLayout>
+
+                    <!-- CNPJ -->
+                    <HorizontalStackLayout>
+                        <Label Text="CNPJ:"  FontSize="18" FontFamily="SourceSans" TextColor="Black" WidthRequest="80" VerticalOptions="Center"/>
+                        <Entry x:Name="CnpjEntry" Placeholder="Digite o CNPJ" WidthRequest="200"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Senha -->
+                    <HorizontalStackLayout>
+                        <Label Text="Senha:" FontSize="18" FontFamily="SourceSans" TextColor="Black" WidthRequest="80" VerticalOptions="Center"/>
+                        <Entry x:Name="SenhaEntry" Placeholder="Digite a senha" WidthRequest="200" IsPassword="True"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Botão Cadastrar -->
+                    <Button Text="Cadastrar"
+                            
+                            FontSize="18"
+                            FontFamily="SourceSans"
+                            BackgroundColor="#8E7C94"
+                            TextColor="Black"
+                            CornerRadius="20"
+                            WidthRequest="200"
+                            HorizontalOptions="Center"
+                            Clicked="OnCadastrarClicked" 
+                            BorderWidth="2"
+                            BorderColor="#445738"/>
+
+                    <!-- Link para login -->
+                    <Label Text="Já tenho um cadastro"
+                          
+                           FontSize="18"
+                           FontFamily="SourceSans"
+                           HorizontalOptions="Center"
+                           TextColor="Black" />
+                    <Button Text="Entrar"
+                            FontSize="18"
+                            FontFamily="SourceSans"
+                            BackgroundColor="Transparent"
+                            TextColor="Purple"
+                            Clicked="OnEntrarClicked" />
+
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,83 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Teste.CadastroFamilia"
+             Title="Cadastro"
+             BackgroundColor="White">
+
+    <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Center">
+
+        <!-- Logo -->
+        <Image Source="Logo_villagio_v2.png"
+               HeightRequest="150"
+               HorizontalOptions="Center" />
+
+        <!-- Título -->
+        <Label Text="Cadastro"
+               FontFamily="CanvasInline"
+               FontSize="30"
+               HorizontalOptions="Center"
+               TextColor="Black"
+                />
+
+        <!-- Formulário -->
+        <Border BackgroundColor="#B77F61"
+                Stroke="Black"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 20"
+                Padding="20"
+                HorizontalOptions="Center">
+
+            <VerticalStackLayout Spacing="15">
+
+                <!-- Nome -->
+                <HorizontalStackLayout>
+                    <Label Text="Nome:"  FontSize="18" FontFamily="SourceSans" TextColor="Black" WidthRequest="80" VerticalOptions="Center"/>
+                    <Entry x:Name="NomeEntry" Placeholder="Digite seu nome" WidthRequest="200"/>
+                </HorizontalStackLayout>
+
+                <!-- Telefone -->
+                <HorizontalStackLayout>
+                    <Label Text="Telefone:"  FontSize="18" FontFamily="SourceSans" TextColor="Black" WidthRequest="80" VerticalOptions="Center"/>
+                    <Entry x:Name="TelefoneEntry" Placeholder="Digite seu telefone" WidthRequest="200" Keyboard="Telephone"/>
+                </HorizontalStackLayout>
+
+                <!-- Senha -->
+                <HorizontalStackLayout>
+                    <Label Text="Senha:" FontSize="18" FontFamily="SourceSans" TextColor="Black" WidthRequest="80" VerticalOptions="Center"/>
+                    <Entry x:Name="SenhaEntry" Placeholder="Digite sua senha" WidthRequest="200" IsPassword="True"/>
+                </HorizontalStackLayout>
+
+                <!-- Botão Cadastrar -->
+                <Button Text="Cadastrar"
+                        FontFamily="SourceSans"
+                        FontSize="18"
+                        BackgroundColor="#8E7C94"
+                        TextColor="Black"
+                       
+                        CornerRadius="20"
+                        WidthRequest="200"
+                        HorizontalOptions="Center"
+                        Clicked="OnCadastrarClicked"
+                        BorderColor="#445738"
+                        BorderWidth="2"/>
+
+                <!-- Link para login -->
+                <Label Text="Já tenho um cadastro"
+                      
+                       FontFamily="SourceSans"
+                       FontSize="18"
+                       HorizontalOptions="Center"
+                       TextColor="Black" />
+                <Button Text="Entrar"
+                        FontSize="18"
+                        FontFamily="SourceSans"
+                        BackgroundColor="Transparent"
+                        TextColor="Purple"
+                        Clicked="OnEntrarClicked" />
+
+            </VerticalStackLayout>
+        </Border>
+    </VerticalStackLayout>
+</ContentPage>
+
+

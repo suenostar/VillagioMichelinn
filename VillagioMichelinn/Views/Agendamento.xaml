@@ -1,0 +1,843 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Teste.Agendamento"
+             Title="Agendamento"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <!-- Logo -->
+            <Image Source="Logo_villagio_v2.png"
+                   HeightRequest="150"
+                   HorizontalOptions="Center" />
+
+            <!-- Título -->
+            <Label Text="Agendamento"    
+                   FontSize="30"
+                   FontFamily="CanvasInline"
+                   />
+
+            <!-- Quadrado marrom que engloba tudo -->
+            <Border BackgroundColor="#B77F61"
+                    Stroke="Black"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20"
+                    Padding="15"
+                    Margin="10"
+                    WidthRequest="390">
+
+                <VerticalStackLayout Spacing="20">
+
+                    <!-- Título -->
+                    <Label Text="Data"
+                           TextColor="Black"
+                           FontFamily="CanvasInline"
+                           FontSize="28"
+                           
+                            />
+
+                    <!-- Quadrado branco com calendário -->
+                    <Border BackgroundColor="White"
+                            Stroke="Black"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 20"
+                            Padding="5">
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <!-- Cabeçalho do calendário -->
+
+                            <Grid ColumnDefinitions="Auto,*,Auto" Padding="10">
+                                <!-- Botão Anterior -->
+                                <Button BackgroundColor="#D9BBAB"
+                                            WidthRequest="40"
+                                            HeightRequest="40"
+                                            CornerRadius="10"
+                                            BorderColor="Black"
+                                            BorderWidth="2"
+                                            Clicked="OnPreviousMonthClicked">
+
+                                    <Button.ImageSource>
+                                        <!-- Código do ícone chevron-left -->
+                                        <FontImageSource 
+                                                Glyph="&#xF284;"
+                                                FontFamily="BootstrapIcons"
+                                                Size="24"
+                                                Color="Black"/>
+                                    </Button.ImageSource>
+                                </Button>
+
+                                <!-- Mês -->
+                                <Label x:Name="MonthLabel"
+                                           FontFamily="CanvasInline"
+                                           Grid.Column="1"
+                                           HorizontalOptions="Center"
+                                           FontSize="30"
+                                           TextColor="Black"/>
+
+                                <!-- Botão Próximo -->
+                                <Button Grid.Column="2"
+                                            BackgroundColor="#D9BBAB"
+                                            WidthRequest="40"
+                                            HeightRequest="40"
+                                            CornerRadius="10"
+                                            BorderColor="Black"
+                                            BorderWidth="2"
+                                            Clicked="OnNextMonthClicked">
+
+                                    <Button.ImageSource>
+                                        <!-- Código do ícone chevron-right -->
+                                        <FontImageSource 
+                                                Glyph="&#xF285;"
+                                                FontFamily="BootstrapIcons"
+                                                Size="24"
+                                                Color="Black"/>
+                                    </Button.ImageSource>
+                                </Button>
+                            </Grid>
+
+                            <!-- Cabeçalho dos dias -->
+                            <Grid ColumnDefinitions="*,*,*,*,*,*,*">
+                                <Label Text="Dom" FontFamily="SourceSans" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Seg" FontFamily="SourceSans" Grid.Column="1" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Ter" FontFamily="SourceSans" Grid.Column="2" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Qua" FontFamily="SourceSans" Grid.Column="3" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Qui" FontFamily="SourceSans" Grid.Column="4" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Sex" FontFamily="SourceSans" Grid.Column="5" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Sáb" FontFamily="SourceSans" Grid.Column="6" HorizontalOptions="Center" FontAttributes="Bold"/>
+                            </Grid>
+
+                            <!-- Grid dos dias -->
+                            <Grid x:Name="CalendarGrid"
+                                  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
+                                  ColumnDefinitions="*,*,*,*,*,*,*"
+                                  RowSpacing="9"
+                                  ColumnSpacing="3"
+                                  Margin="0,10,0,0"/>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Legenda de status -->
+                    <VerticalStackLayout Spacing="20" Margin="10">
+
+                        <!-- Esgotado -->
+                        <HorizontalStackLayout Spacing="5">
+                            <Border WidthRequest="20" HeightRequest="20"
+                                     Stroke="Black"
+                                     StrokeThickness="1"
+                                     StrokeShape="Ellipse"
+                                     BackgroundColor="Red"
+                                     VerticalOptions="Center"/>
+                            <Label Text="Esgotado" FontAttributes="Bold" FontFamily="SourceSans" VerticalOptions="Center" TextColor="Black"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Selecionado -->
+                        <HorizontalStackLayout Spacing="5">
+                            <Border WidthRequest="20" HeightRequest="20"
+                                     Stroke="Black"
+                                     StrokeThickness="1"
+                                     StrokeShape="Ellipse"
+                                     BackgroundColor="Yellow"
+                                     VerticalOptions="Center"/>
+                            <Label Text="Selecionado" FontAttributes="Bold" FontFamily="SourceSans" VerticalOptions="Center" TextColor="Black"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Indisponível -->
+                        <HorizontalStackLayout Spacing="5">
+                            <Border WidthRequest="20" HeightRequest="20"
+                                     Stroke="Black"
+                                     StrokeThickness="1"
+                                     StrokeShape="Ellipse"
+                                     BackgroundColor="Gray"
+                                     VerticalOptions="Center"/>
+                            <Label Text="Indisponível" FontAttributes="Bold" FontFamily="SourceSans" VerticalOptions="Center" TextColor="Black"/>
+                        </HorizontalStackLayout>
+
+                        <!-- Disponível -->
+                        <HorizontalStackLayout Spacing="5">
+                            <Border WidthRequest="20" HeightRequest="20"
+                                     Stroke="Black"
+                                     StrokeThickness="1"
+                                     StrokeShape="Ellipse"
+                                     BackgroundColor="#A4FF88"
+                                     VerticalOptions="Center"/>
+                            <Label Text="Disponível" FontAttributes="Bold" FontFamily="SourceSans" VerticalOptions="Center" TextColor="Black"/>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+
+                    <!-- Quadro branco com conteúdo da safra -->
+                    <Border BackgroundColor="White"     
+                            Stroke="Black"     
+                            StrokeThickness="1"    
+                            StrokeShape="RoundRectangle 20"     
+                            Padding="15"     
+                            Margin="0,10,0,0">
+                        <VerticalStackLayout Spacing="10">
+
+                            <!-- Quadrado para título Safra -->
+                            <Border BackgroundColor="#D9BBAB"               
+                                    Stroke="Black"               
+                                    StrokeThickness="1"              
+                                    StrokeShape="RoundRectangle 15"              
+                                    Padding="0"              
+                                    Margin="0,0,0,10"
+                                    WidthRequest="200"
+                                    HorizontalOptions="Start">
+                                <Label Text="Safra do Mês" 
+                                       FontAttributes="Bold"
+                                       FontFamily="SourceSans"
+                                       FontSize="20"               
+                                       TextColor="Black"                
+                                       HorizontalOptions="Center"                 
+                                       VerticalOptions="Center"/>
+                            </Border>
+
+                            <!-- Conteúdo dinâmico da safra -->
+                            <Label x:Name="SafraLabel" 
+                                 
+                                   FontFamily="SourceSans"
+                                   FontSize="18"
+                                   TextColor="Black"                                 
+                                   HorizontalTextAlignment="Center"/>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Seção Horário -->
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Horário" FontFamily="CanvasInline" FontSize="26" TextColor="Black" />
+                        <FlexLayout x:Name="HorariosFlex" Wrap="Wrap" Margin="1" JustifyContent="Center">
+
+                            <Button Text="08:00" Clicked="OnHorarioClicked" BackgroundColor="#A4FF88" TextColor="Black" Margin="6" BorderColor="Black" BorderWidth="1"/>
+                            <Button Text="09:00" Clicked="OnHorarioClicked" BackgroundColor="#A4FF88" TextColor="Black" Margin="6" BorderColor="Black" BorderWidth="1"/>
+                            <Button Text="10:00" Clicked="OnHorarioClicked" BackgroundColor="#A4FF88" TextColor="Black" Margin="6" BorderColor="Black" BorderWidth="1"/>
+                            <Button Text="11:00" Clicked="OnHorarioClicked" BackgroundColor="#A4FF88" TextColor="Black" Margin="6" BorderColor="Black" BorderWidth="1"/>
+                            <Button Text="12:00" Clicked="OnHorarioClicked" BackgroundColor="#A4FF88" TextColor="Black" Margin="6" BorderColor="Black" BorderWidth="1"/>
+                            <Button Text="13:00" Clicked="OnHorarioClicked" BackgroundColor="#A4FF88" TextColor="Black" Margin="6" BorderColor="Black" BorderWidth="1"/>
+                            <Button Text="14:00" Clicked="OnHorarioClicked" BackgroundColor="#A4FF88" TextColor="Black" Margin="6" BorderColor="Black" BorderWidth="1"/>
+                            <Button Text="15:00" Clicked="OnHorarioClicked" BackgroundColor="#A4FF88" TextColor="Black" Margin="6" BorderColor="Black" BorderWidth="1"/>
+                            <Button Text="16:00" Clicked="OnHorarioClicked" BackgroundColor="#A4FF88" TextColor="Black" Margin="6" BorderColor="Black" BorderWidth="1"/>
+                            <Button Text="17:00" Clicked="OnHorarioClicked" BackgroundColor="#A4FF88" TextColor="Black" Margin="6" BorderColor="Black" BorderWidth="1"/>
+
+                        </FlexLayout>
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- inico das modificações 06/12 00:30 -->
+
+
+
+            <!-- Quantidade de Pessoas -->
+            <Border BackgroundColor="#B77F61"
+                    Stroke="Black"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20"
+                    Padding="15"
+                    Margin="10"
+                    WidthRequest="390">
+
+                <VerticalStackLayout Spacing="15">
+                    <!-- Título -->
+                    <Label Text="Quantidade de Pessoas"
+                           FontFamily="CanvasInline"
+                           FontSize="22"
+                           TextColor="Black"
+                           HorizontalOptions="Start"/>
+
+                    <!-- Quadrado branco interno -->
+                    <Border BackgroundColor="White"   
+                            Stroke="Black"    
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 15"
+                            Padding="15"
+                            WidthRequest="358">
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <!-- Passeio -->
+                            <toolkit:Expander x:Name="expPasseio" IsExpanded="False">
+                                <toolkit:Expander.Header>
+                                    <Border BackgroundColor="#F4F4F4" Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" Padding="10">
+                                        <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
+                                            <Label Text="Passeio" FontFamily="CanvasInline" FontSize="20" TextColor="Black" VerticalOptions="Center"/>
+                                            <BoxView Grid.Column="1" HeightRequest="1" BackgroundColor="Transparent"/>
+
+                                            <!-- Seta que gira -->
+                                            <Image Grid.Column="2"
+                                                   Source="chevron_down.png"
+                                                   WidthRequest="18" HeightRequest="18"
+                                                   VerticalOptions="Center">
+                                                <Image.Triggers>
+                                                    <DataTrigger TargetType="Image" Binding="{Binding Source={x:Reference expPasseio}, Path=IsExpanded}" Value="True">
+                                                        <Setter Property="Rotation" Value="180"/>
+                                                    </DataTrigger>
+                                                </Image.Triggers>
+                                            </Image>
+                                        </Grid>
+                                    </Border>
+                                </toolkit:Expander.Header>
+
+                                <Border BackgroundColor="White" Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" Padding="10" Margin="0,8,0,0">
+                                    <VerticalStackLayout Spacing="16">
+
+                                        <!-- Adulto -->
+                                        <HorizontalStackLayout Spacing="20">
+                                            <Label Text="Adulto (R$12,00):"
+                                                   FontFamily="SourceSans"
+                                                   FontSize="15"
+                                                   VerticalOptions="Center"
+                                                   TextColor="Black"/>
+
+                                            <!-- Botão Menos -->
+                                            <Button WidthRequest="40" HeightRequest="40"
+                                                    BackgroundColor="White"
+                                                    BorderColor="Black" BorderWidth="1"
+                                                    Margin="35,0,0,0"
+                                                    Clicked="OnAdultoMenos">
+                                                <Button.ImageSource>
+                                                    <FontImageSource
+                                                     Glyph="&#xF2EA;"
+                                                     FontFamily="BootstrapIcons"
+                                                     Size="20"
+                                                     Color="Black"/>
+                                                </Button.ImageSource>
+                                            </Button>
+
+                                            <!-- Label para contagem -->
+                                            <Label x:Name="AdultoCount"
+                                                   Text="0"
+                                                   FontSize="20"
+                                                   VerticalOptions="Center"
+                                                   TextColor="Black"/>
+
+                                            <!-- Botão Mais -->
+                                            <Button WidthRequest="40" HeightRequest="40" BackgroundColor="White" BorderColor="Black" BorderWidth="1" Clicked="OnAdultoMais">
+                                                <Button.ImageSource>
+                                                    <FontImageSource 
+                                                        Glyph="&#xF4FE;"
+                                                        FontFamily="BootstrapIcons"
+                                                        Size="20"
+                                                        Color="Black"/>
+                                                </Button.ImageSource>
+                                            </Button>
+                                        </HorizontalStackLayout>
+
+                                        <!-- Meia -->
+                                        <HorizontalStackLayout Spacing="20">
+                                            <Label Text="Meia (R$6,00):"
+                                                   FontFamily="SourceSans"
+                                                   FontSize="15"
+                                                   VerticalOptions="Center"
+                                                   TextColor="Black"/>
+
+                                            <Button WidthRequest="40" HeightRequest="40" BackgroundColor="White" BorderColor="Black" BorderWidth="1" Margin="54,0,0,0" Clicked="OnMeiaMenos">
+                                                <Button.ImageSource>
+                                                    <FontImageSource 
+                                                        Glyph="&#xF2EA;"
+                                                        FontFamily="BootstrapIcons"
+                                                        Size="20"
+                                                        Color="Black"/>
+                                                </Button.ImageSource>
+                                            </Button>
+
+                                            <Label x:Name="MeiaCount"
+                                                   Text="0"
+                                                   FontSize="20"
+                                                   VerticalOptions="Center"
+                                                   TextColor="Black"/>
+
+                                            <Button WidthRequest="40" HeightRequest="40" BackgroundColor="White" BorderColor="Black" BorderWidth="1" Clicked="OnMeiaMais">
+                                                <Button.ImageSource>
+                                                    <FontImageSource
+                                                        Glyph="&#xF4FE;"
+                                                        FontFamily="BootstrapIcons"
+                                                        Size="20"
+                                                        Color="Black"/>
+                                                </Button.ImageSource>
+                                            </Button>
+                                        </HorizontalStackLayout>
+
+                                        <!-- Não Pagante -->
+                                        <HorizontalStackLayout Spacing="20">
+                                            <Label Text="Não Pagante (R$00,00):"
+                                                   FontFamily="SourceSans"
+                                                   FontSize="15"
+                                                   VerticalOptions="Center"
+                                                   TextColor="Black"/>
+
+                                            <Button WidthRequest="40" HeightRequest="40" BackgroundColor="White" BorderColor="Black" BorderWidth="1" Margin="-3,0,0,0" Clicked="OnNaoPaganteMenos">
+                                                <Button.ImageSource>
+                                                    <FontImageSource
+                                                        Glyph="&#xF2EA;"
+                                                        FontFamily="BootstrapIcons"
+                                                        Size="20"
+                                                        Color="Black"/>
+                                                </Button.ImageSource>
+                                            </Button>
+
+                                            <Label x:Name="NaoPaganteCount"
+                                                   Text="0"
+                                                   FontSize="20"
+                                                   VerticalOptions="Center"
+                                                   TextColor="Black"/>
+
+                                            <Button WidthRequest="40" HeightRequest="40" BackgroundColor="White" BorderColor="Black" BorderWidth="1" Clicked="OnNaoPaganteMais">
+                                                <Button.ImageSource>
+                                                    <FontImageSource
+                                                        Glyph="&#xF4FE;"
+                                                        FontFamily="BootstrapIcons"
+                                                        Size="20"
+                                                        Color="Black"/>
+                                                </Button.ImageSource>
+                                            </Button>
+                                        </HorizontalStackLayout>
+
+                                        <Label Text="Passeio mais cáfe da manhã" FontFamily="SourceSans" FontSize="18" TextColor="Black"/>
+
+
+                                        <!-- GRUPO 1: Passeio + Café da manhã -->
+                                        <HorizontalStackLayout Spacing="10" Margin="0,0,0,-15">
+                                            <Label Text="Café caipira (Completo) R$75,00"
+           FontFamily="SourceSans" FontSize="15"
+           VerticalOptions="Center" TextColor="Black"/>
+                                            <CheckBox x:Name="CafePasseioCaipiraCheckBox"
+              Color="#D9BBAB" WidthRequest="48" HeightRequest="48"
+              VerticalOptions="Center"
+              CheckedChanged="OnCafeCheckedChanged"/>
+                                        </HorizontalStackLayout>
+
+                                        <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
+                                            <Label Text="Café rural (Reduzido) R$60,00"
+           FontFamily="SourceSans" FontSize="15"
+           VerticalOptions="Center" TextColor="Black"/>
+                                            <CheckBox x:Name="CafePasseioRuralCheckBox"
+              Color="#D9BBAB" WidthRequest="48" HeightRequest="48"
+              VerticalOptions="Center"
+              CheckedChanged="OnCafeCheckedChanged"/>
+                                        </HorizontalStackLayout>
+
+                                    </VerticalStackLayout>
+                                </Border>
+                            </toolkit:Expander>
+
+                            <!-- Café da manhã -->
+                            <toolkit:Expander x:Name="expCafe" IsExpanded="False">
+                                <toolkit:Expander.Header>
+                                    <Border BackgroundColor="#F4F4F4" Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" Padding="10" Margin="0,8,0,0">
+                                        <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
+                                            <Label Text="Café da manhã" FontFamily="CanvasInline" FontSize="20" TextColor="Black" VerticalOptions="Center"/>
+                                            <BoxView Grid.Column="1" HeightRequest="1" BackgroundColor="Transparent"/>
+                                            <Image Grid.Column="2" Source="chevron_down.png" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
+                                                <Image.Triggers>
+                                                    <DataTrigger TargetType="Image" Binding="{Binding Source={x:Reference expCafe}, Path=IsExpanded}" Value="True">
+                                                        <Setter Property="Rotation" Value="180"/>
+                                                    </DataTrigger>
+                                                </Image.Triggers>
+                                            </Image>
+                                        </Grid>
+                                    </Border>
+                                </toolkit:Expander.Header>
+
+
+                                <!-- O Expander só pode ter UM filho: aqui é um Border -->
+                                <Border BackgroundColor="White"
+                                        Stroke="Black"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 10"
+                                        Padding="10"
+                                        Margin="0,8,0,0">
+
+                                    <!-- O Border também só pode ter UM filho: aqui agrupamos tudo num VerticalStackLayout -->
+                                    <VerticalStackLayout Spacing="1">
+
+                                        <!-- Grupo 2: Café da manhã -->
+                                        <HorizontalStackLayout Spacing="10" Margin="0,0,0,-15">
+                                            <Label Text="Café caipira (Completo) R$75,00"
+           FontFamily="SourceSans"
+           FontSize="15"
+           VerticalOptions="Center"
+           TextColor="Black" />
+                                            <CheckBox x:Name="CafeManhaCaipiraCheckBox"
+              Color="#D9BBAB"
+              WidthRequest="48"
+              HeightRequest="48"
+              VerticalOptions="Center"
+              CheckedChanged="OnCafeCheckedChanged" />
+                                        </HorizontalStackLayout>
+
+                                        <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
+                                            <Label Text="Café rural (Reduzido) R$60,00"
+           FontFamily="SourceSans"
+           FontSize="15"
+           VerticalOptions="Center" 
+           TextColor="Black" />
+                                            <CheckBox x:Name="CafeManhaRuralCheckBox"
+              Color="#D9BBAB"
+              WidthRequest="48"
+              HeightRequest="48"
+              VerticalOptions="Center"
+              CheckedChanged="OnCafeCheckedChanged" />
+                                        </HorizontalStackLayout>
+
+                                        <!-- Adicione outras linhas aqui seguindo o mesmo padrão -->
+
+                                    </VerticalStackLayout>
+                                </Border>
+
+                            </toolkit:Expander>
+
+                            <!-- Combos (com Agência e Família dentro) -->
+                            <toolkit:Expander x:Name="expCombos" IsExpanded="False">
+                                <toolkit:Expander.Header>
+                                    <Border BackgroundColor="#F4F4F4" Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" Padding="10" Margin="0,8,0,0">
+                                        <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
+                                            <Label Text="Combos" FontFamily="CanvasInline" FontSize="20" TextColor="Black" VerticalOptions="Center"/>
+                                            <BoxView Grid.Column="1" HeightRequest="1" BackgroundColor="Transparent"/>
+                                            <Image Grid.Column="2" Source="chevron_down.png" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
+                                                <Image.Triggers>
+                                                    <DataTrigger TargetType="Image" Binding="{Binding Source={x:Reference expCombos}, Path=IsExpanded}" Value="True">
+                                                        <Setter Property="Rotation" Value="180"/>
+                                                    </DataTrigger>
+                                                </Image.Triggers>
+                                            </Image>
+                                        </Grid>
+                                    </Border>
+
+                                </toolkit:Expander.Header>
+
+                                <!-- Conteúdo expandido do Combos -->
+                                <VerticalStackLayout Spacing="12" Margin="0,8,0,0">
+
+                                    <!-- Agência -->
+                                    <toolkit:Expander x:Name="expAgencia" IsExpanded="False">
+                                        <toolkit:Expander.Header>
+                                            <Border BackgroundColor="#F4F4F4"
+                                                    Stroke="Black"
+                                                    StrokeThickness="1"
+                                                    StrokeShape="RoundRectangle 10"
+                                                    Padding="10"
+                                                    Margin="0,8,0,0">
+                                                <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
+                                                    <Label Text="Agência"
+                                                           FontFamily="CanvasInline"
+                                                           FontSize="20"
+                                                           TextColor="Black"
+                                                           VerticalOptions="Center" />
+                                                    <BoxView Grid.Column="1" HeightRequest="1" BackgroundColor="Transparent" />
+
+                                                    <!-- Seta -->
+                                                    <Image Grid.Column="2"
+                                                           Source="chevron_down.png"
+                                                           WidthRequest="18"
+                                                           HeightRequest="18"
+                                                           VerticalOptions="Center">
+                                                        <Image.Triggers>
+                                                            <DataTrigger TargetType="Image" Binding="{Binding Source={x:Reference expAgencia}, Path=IsExpanded}" Value="True">
+                                                                <Setter Property="Rotation" Value="180" />
+                                                            </DataTrigger>
+                                                        </Image.Triggers>
+                                                    </Image>
+                                                </Grid>
+                                            </Border>
+                                        </toolkit:Expander.Header>
+
+                                        <!-- Agencia combo -->
+                                        <Border BackgroundColor="White"
+                                                Stroke="Black"
+                                                Padding="10"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 10"
+                                                Margin="0,8,0,0">
+                                            <VerticalStackLayout Spacing="1">
+
+                                                <!--opc1-->
+                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,2">
+                                                    <Label Text="Opção 1 (obs: Escolha uma opção de café)"
+                                                           FontSize="16"
+                                                           FontFamily="SourceSansBold"  
+                                                           VerticalOptions="Center"
+                                                           TextColor="Black" />
+                                                </HorizontalStackLayout>
+
+                                                <!-- Linha 1: Café caipira -->
+                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,-20">
+                                                    <Label Text="Café caipira (Completo) R$75,00"
+                                                           FontFamily="SourceSans"
+                                                           FontSize="15"
+                                                           VerticalOptions="Center"
+                                                           TextColor="Black" />
+
+                                                    <CheckBox x:Name="CFCPagenciaCheckBox"
+                                                              Color="#D9BBAB"
+                                                              WidthRequest="48"
+                                                              HeightRequest="48"
+                                                              VerticalOptions="Center"
+                                                              CheckedChanged="OnCafeCheckedChanged" />
+                                                </HorizontalStackLayout>
+
+                                                <!-- Linha 2: Café rural (Reduzido) -->
+                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,-10">
+                                                    <Label Text="Café rural (Reduzido) R$60,00"
+                                                           FontFamily="SourceSans"
+                                                           FontSize="15"
+                                                           VerticalOptions="Center"
+                                                           TextColor="Black" />
+
+                                                    <CheckBox x:Name="CFRLagenciaCheckBox"
+                                                              Color="#D9BBAB"
+                                                              WidthRequest="48"
+                                                              HeightRequest="48"
+                                                              VerticalOptions="Center"
+                                                              CheckedChanged="OnCafeCheckedChanged" />
+                                                </HorizontalStackLayout>
+
+                                                <!-- Linha 3: Taxa de passeio -->
+                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
+                                                    <Label Text="Taxa de passeio R$12,00"
+                                                           FontFamily="SourceSans"
+                                                           FontSize="15"
+                                                           VerticalOptions="Center"
+                                                           TextColor="Black" />
+                                                </HorizontalStackLayout>
+
+                                                <!-- Adicionar um logica de calcular total -->
+
+                                                <!--opc2-->
+                                                <HorizontalStackLayout Spacing="10" Margin="0,15,0,0">
+                                                    <Label Text="Opção 2"
+                                                           FontFamily="SourceSansBold" 
+                                                           FontSize="16"
+                                                           VerticalOptions="Center"
+                                                           TextColor="Black" />
+                                                </HorizontalStackLayout>
+
+                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
+                                                    <Label Text="Taxa de passeio R$15,00"
+                                                           FontFamily="SourceSans"
+                                                           VerticalOptions="Center"
+                                                           TextColor="Black" />
+
+                                                    <!-- CheckBox -->
+                                                    <CheckBox x:Name="PasseioagenciaCheckBox"
+                                                              Color="#D9BBAB"
+                                                              WidthRequest="48"
+                                                              HeightRequest="48"
+                                                              VerticalOptions="Center"
+                                                              CheckedChanged="OnCafeCheckedChanged" />
+                                                </HorizontalStackLayout>
+
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </toolkit:Expander>
+
+                                    <!-- Família -->
+                                    <toolkit:Expander x:Name="expFamilia" IsExpanded="False">
+                                        <toolkit:Expander.Header>
+                                            <Border BackgroundColor="#F4F4F4"
+                                                    Stroke="Black"
+                                                    StrokeThickness="1"
+                                                    StrokeShape="RoundRectangle 10"
+                                                    Padding="10"
+                                                    Margin="0,8,0,0">
+                                                <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
+                                                    <Label Text="Família"
+                                                           FontFamily="CanvasInline"
+                                                           FontSize="20"
+                                                           TextColor="Black"
+                                                           VerticalOptions="Center" />
+                                                    <BoxView Grid.Column="1" HeightRequest="1" BackgroundColor="Transparent" />
+
+                                                    <!-- Seta que gira -->
+                                                    <Image Grid.Column="2"
+                                                           Source="chevron_down.png"
+                                                           WidthRequest="18"
+                                                           HeightRequest="18"
+                                                           VerticalOptions="Center">
+                                                        <Image.Triggers>
+                                                            <DataTrigger TargetType="Image" Binding="{Binding Source={x:Reference expFamilia}, Path=IsExpanded}" Value="True">
+                                                                <Setter Property="Rotation" Value="180" />
+                                                            </DataTrigger>
+                                                        </Image.Triggers>
+                                                    </Image>
+                                                </Grid>
+                                            </Border>
+                                        </toolkit:Expander.Header>
+
+                                        <!--Familia combo -->
+                                        <Border BackgroundColor="White"
+                                                Stroke="Black"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 10"
+                                                Padding="10"
+                                                Margin="0,8,0,0">
+                                            <VerticalStackLayout Spacing="1">
+
+                                                <!--opc1-->
+                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,2">
+                                                    <Label Text="Opção 1 (obs: Escolha uma opção de café)"
+                                                           FontSize="16"
+                                                           FontFamily="SourceSansBold"                                            
+                                                           VerticalOptions="Center"
+                                                           TextColor="Black" />
+                                                </HorizontalStackLayout>
+
+                                                <!-- Linha 1: Café caipira -->
+                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
+                                                    <Label Text="Café caipira (Completo) R$75,00"
+                                                           FontFamily="SourceSans" 
+                                                           FontSize="15"
+                                                           VerticalOptions="Center"
+                                                           TextColor="Black" />
+                                                </HorizontalStackLayout>
+
+                                                <!-- Linha 2: Taxa de passeio -->
+                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
+                                                    <Label Text="Taxa de passeio R$12,00"
+                                                           FontFamily="SourceSans"
+                                                           FontSize="15"
+                                                           VerticalOptions="Center"
+                                                           TextColor="Black" />
+                                                </HorizontalStackLayout>
+
+                                                <!-- Linha 3: Total -->
+                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
+                                                    <Label Text="Total R$87,00"
+                                                           FontFamily="SourceSans"
+                                                           VerticalOptions="Center" 
+                                                           FontSize="15"
+                                                           TextColor="Black" />
+
+                                                    <!-- CheckBox -->
+                                                    <CheckBox x:Name="CombofamiliaCheckBox"
+                                                              Color="#D9BBAB"
+                                                              WidthRequest="48"
+                                                              HeightRequest="48"
+                                                              VerticalOptions="Center"
+                                                              CheckedChanged="OnCafeCheckedChanged" />
+                                                </HorizontalStackLayout>
+
+                                                <!--opc2-->
+                                                <HorizontalStackLayout Spacing="10" Margin="0,15,0,0">
+                                                    <Label Text="Opção 2"
+                                                           FontFamily="SourceSansBold" 
+                                                           FontSize="16"
+                                                           VerticalOptions="Center"
+                                                           TextColor="Black" />
+                                                </HorizontalStackLayout>
+
+                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
+                                                    <Label Text="Taxa de passeio R$15,00"
+                                                           FontFamily="SourceSans"
+                                                           VerticalOptions="Center"
+                                                           TextColor="Black" />
+
+                                                    <!-- CheckBox -->
+                                                    <CheckBox x:Name="PasseiofamiliaCheckBox"
+                                                              Color="#D9BBAB"
+                                                              WidthRequest="48"
+                                                              HeightRequest="48"
+                                                              VerticalOptions="Center"
+                                                              CheckedChanged="OnCafeCheckedChanged" />
+                                                </HorizontalStackLayout>
+                                            </VerticalStackLayout>
+                                        </Border>
+
+                                        <!-- Só mostrar quando 'Combos' estiver expandido --> c:\users\renan.lnascimento4\source\repos\villagiomichelinn\villagiomichelinn\mauiprogram.cs
+
+                                        <toolkit:Expander.Triggers>
+                                            <DataTrigger TargetType="toolkit:Expander" Binding="{Binding Source={x:Reference expCombos}, Path=IsExpanded}" Value="False">
+                                                <Setter Property="IsVisible" Value="False" />
+                                            </DataTrigger>
+                                        </toolkit:Expander.Triggers>
+                                    </toolkit:Expander>
+
+                                </VerticalStackLayout>
+
+                            </toolkit:Expander>
+
+                            <!-- Aviso -->
+                            <Border BackgroundColor="LightGray"
+                                    Stroke="Black"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    Padding="10"
+                                    Margin="10,20,10,0"
+                                    WidthRequest="300">
+                                <Label Text="Aviso: Criança de 0 a 5 anos não pagam e Criança de 06 a 12 anos pagam meia."
+                                       FontSize="18"
+                                       FontFamily="SourceSans"
+                                       TextColor="Black"
+                                       HorizontalTextAlignment="Center"/>
+                            </Border>
+
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Seção Total e Botão Pagar -->
+            <VerticalStackLayout Spacing="20" Margin="10">
+
+                <!-- Quadrado para Total -->
+                <Border BackgroundColor="#B77F61"
+                        Stroke="Black"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 15"
+                        Padding="15"
+                        HorizontalOptions="Center"
+                        WidthRequest="250">
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+
+                        <Label Text="Total:"
+                               FontFamily="CanvasInline"
+                               FontSize="25"
+                               TextColor="Black"/>
+
+                        <Label x:Name="TotalLabel"
+                               Text="R$ 0,00"
+                               FontSize="25"
+                               FontFamily="CanvasInline"
+                               TextColor="Black"/>
+                    </HorizontalStackLayout>
+                </Border>
+
+
+
+                <!-- Botão Trocar pacote (RESET NEUTRO) -->
+                <Button Text="Trocar pacote"
+            FontFamily="CanvasInline"
+            BackgroundColor="#EEE"
+            TextColor="Black"
+            CornerRadius="20"
+            WidthRequest="220"
+            HeightRequest="50"
+            HorizontalOptions="Center"
+            BorderColor="Black"
+            BorderWidth="1.5"
+            Clicked="OnTrocarPacoteClicked"/>
+
+
+                <!-- Botão Pagar -->
+
+                <Button Text="Pagar"
+                        FontFamily="CanvasInline"
+                        BackgroundColor="#D9BBAB"
+                        TextColor="Black"
+                        CornerRadius="25"
+                        WidthRequest="220"
+                        HeightRequest="55"
+                        HorizontalOptions="Center"
+                        BorderColor="Black"
+                        BorderWidth="2"
+                        FontSize="30"
+                        Clicked="OnPagarClicked"/>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
