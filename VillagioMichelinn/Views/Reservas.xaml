@@ -49,11 +49,8 @@
                         </VerticalStackLayout>
 
                         <!-- Botão de menu (⋮) -->
-                        <Label Text="⋮"
-                               FontSize="28"
-                               TextColor="Black"
-                               HorizontalOptions="End"
-                               VerticalOptions="Start">
+                        <Label Text="⋮" FontSize="28" TextColor="Black" HorizontalOptions="End" VerticalOptions="Start">
+
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnMenuClicked"/>
                             </Label.GestureRecognizers>
@@ -114,5 +111,4 @@
             Clicked="OnNreservaClicked"/>
 
     </VerticalStackLayout>
-
 </ContentPage>

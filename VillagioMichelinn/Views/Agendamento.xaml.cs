@@ -306,14 +306,7 @@ namespace VillagioMichelinn
         }
 
         // =================== Café / Combos – handler ÚNICO ===================
-        /// <summary>
-        /// Único handler para todos CheckBox:
-        /// - Grupo 1 (Passeio + Café): CafePasseioCaipiraCheckBox / CafePasseioRuralCheckBox
-        /// - Grupo 2 (Café da manhã):  CafeManhaCaipiraCheckBox / CafeManhaRuralCheckBox
-        /// - Combo Agência:            CFCPagenciaCheckBox / CFRLagenciaCheckBox / PasseioagenciaCheckBox
-        /// - Combo Família:            CombofamiliaCheckBox / PasseiofamiliaCheckBox
-        /// Garante exclusividade dentro de cada grupo e exclusividade entre pacotes.
-        /// </summary>
+       
         private void OnCafeCheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             if (sender == null) return;
@@ -591,39 +584,32 @@ namespace VillagioMichelinn
         // =================== Trocar pacote (reset neutro) ===================
         private void OnTrocarPacoteClicked(object sender, EventArgs e)
         {
-            // 0) Volta para estado neutro
+            // Volta para estado neutro
             modoSelecionado = SelectedMode.None;
 
-            // 1) Limpa seleções de pacotes/itens
+            // Limpa seleções de pacotes/itens
             ResetIngressos();
             ClearCafeGrupo1();
             ClearCafeGrupo2();
             ClearCombos();
 
-            // 2) Reabilita todos os grupos (respeitando login de agência)
+            // Reabilita todos os grupos (respeitando login de agência)
             expPasseio.IsEnabled = true;
             expCafe.IsEnabled = true;
             expFamilia.IsEnabled = true;
             if (FindByName("expAgencia") is View expAgenciaView)
                 expAgenciaView.IsEnabled = isAgenciaLogin;
 
-            // 3) (Opcional) Colapsa todos os expansores para limpeza visual
+            // Colapsa todos os expansores para limpeza visual
             expPasseio.IsExpanded = false;
             expCafe.IsExpanded = false;
             expFamilia.IsExpanded = false;
-            // Se o expander da Agência tiver x:Name="expAgencia" gerado, use:
-            // expAgencia.IsExpanded = false;
-            // Como fallback, tente via FindByName:
+    
             var expAg = FindByName("expAgencia");
             if (expAg is CommunityToolkit.Maui.Views.Expander ag)
                 ag.IsExpanded = false;
 
-            // 4) (Opcional) Também limpar dia/horário — descomente se quiser
-            // if (selectedDayButton != null) { selectedDayButton.BackgroundColor = Colors.LightGreen; selectedDayButton = null; }
-            // if (selectedHorarioButton != null) { selectedHorarioButton.BackgroundColor = Color.FromArgb("#A4FF88"); selectedHorarioButton = null; }
-            // SetHorariosEnabled(selectedDayButton != null);
-
-            // 5) Recalcula total (zerado)
+            // Recalcula total (zerado)
             AtualizarTotal();
         }
 

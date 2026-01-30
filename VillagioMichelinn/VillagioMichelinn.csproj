@@ -93,6 +93,9 @@
 	  <MauiXaml Update="Views\Pagamento.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\PixPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Reservas.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

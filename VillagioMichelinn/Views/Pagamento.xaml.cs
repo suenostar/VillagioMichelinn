@@ -1,13 +1,51 @@
-namespace VillagioMichelinn;
+using System;
+using Microsoft.Maui.Controls;
 
-public partial class Pagamento : ContentPage
+// Toolkit Popups
+using CommunityToolkit.Maui.Views;
+// Seu popup customizado
+using VillagioMichelinn.Popups;
+
+namespace VillagioMichelinn
 {
-    public Pagamento()
+    public partial class Pagamento : ContentPage
     {
-        InitializeComponent();
-    }
-    private async void OnInicioClicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new Reservas());
+        private string _pixChave = "0101093764674";
+
+        public Pagamento()
+        {
+            InitializeComponent();
+        }
+
+        private async void OnCopiarPixClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                await Clipboard.SetTextAsync(_pixChave);
+
+                var popup = new PixPopup(
+                    titulo: "PIX copiado",
+                    mensagem: "A chave PIX foi copiada para a área de transferência.",
+                    textoBotao: "Entendi"
+                );
+
+                await this.ShowPopupAsync(popup);
+            }
+            catch
+            {
+                var popup = new PixPopup(
+                    titulo: "Erro",
+                    mensagem: "Não foi possível copiar a chave PIX.",
+                    textoBotao: "OK"
+                );
+
+                await this.ShowPopupAsync(popup);
+            }
+        }
+
+        private async void OnInicioClicked(object sender, EventArgs e)
+        {
+            await Navigation.PopToRootAsync(true);
+        }
     }
 }

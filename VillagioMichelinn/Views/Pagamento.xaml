@@ -6,56 +6,99 @@
              BackgroundColor="White">
 
     <ScrollView>
-        <VerticalStackLayout Spacing="30" Padding="20" >
+        <VerticalStackLayout Spacing="24" Padding="20">
 
-            <!-- Logo -->
+            <!-- LOGO -->
             <Image Source="logo_villagio_v2.png"
-                   HeightRequest="150"
-                   HorizontalOptions="Center" />
+                   HeightRequest="120"
+                   HorizontalOptions="Center"
+                   Margin="0,8,0,4" />
 
+            <!-- CARD MARROM PRINCIPAL -->
+            <Border BackgroundColor="#B77F61"
+                    Stroke="Black"
+                    StrokeThickness="1.5"
+                    StrokeShape="RoundRectangle 28"
+                    Padding="18"
+                    Margin="20,8"
+                    HorizontalOptions="Center"
+                    WidthRequest="300">
 
+                <!-- QUADRADO BRANCO INTERNO (onde ficam os elementos) -->
+                <Border BackgroundColor="White"
+                        Stroke="Black"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 22"
+                        Padding="18">
 
-            <!-- Quadrado com borda arredondada -->
-            <Border BackgroundColor="White"
-                    Stroke="#B77F61"
-                    StrokeThickness="4"
-                    StrokeShape="RoundRectangle 25"
-                    Padding="20"
-                    WidthRequest="250"
-                    HeightRequest="300"
-                    HorizontalOptions="Center">
+                    <VerticalStackLayout Spacing="18">
 
-                <VerticalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center">
+                        <!-- AVISO (cinza) -->
+                        <Border BackgroundColor="#D9D9D9"
+                                Stroke="Black"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 16"
+                                Padding="12"
+                                Margin="0,0,0,6">
+                            <Label Text="Aviso: Após o pagamento, caso ocorra cancelamento, o estorno só será realizado três dias antes da data escolhida"
+                                   FontSize="14"
+                                   TextColor="Black"
+                                   HorizontalTextAlignment="Center"
+                                   LineBreakMode="WordWrap" />
+                        </Border>
 
-                    <!-- Texto Pix -->
-                    <Label Text="Pix: 54463509874"
-                           FontSize="18"
-                           HorizontalOptions="Center"
-                           TextColor="Black"
-                           FontAttributes="Bold" />
+                        <!-- PIX -->
+                        <Label Text="Pix: 0101093764674"
+                               FontSize="16"
+                               HorizontalOptions="Center"
+                               TextColor="Black"
+                               Margin="0,4,0,0" />
 
-                    <!-- QR Code -->
+                        <!-- (Opcional) Botão Copiar PIX -->
+                        <Button Text="Copiar Pix"
+                                FontSize="14"
+                                Padding="12,6"
+                                CornerRadius="14"
+                                BackgroundColor="#D9D9D9"
+                                BorderColor="Black"
+                                BorderWidth="1"
+                                TextColor="Black"
+                                HorizontalOptions="Center"
+                                Clicked="OnCopiarPixClicked" />
 
-                    <Image Source="qrcode1.png"
-                           WidthRequest="180"
-                           HeightRequest="180"
-                           HorizontalOptions="Center" 
-                           />
-                </VerticalStackLayout>
+                        <!-- Moldura branca do QR -->
+                        <Border BackgroundColor="White"
+                                Stroke="Black"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 16"
+                                Padding="10"
+                                HorizontalOptions="Center"
+                                Margin="0,6,0,0">
+                            <Image Source="qrcode1.png"
+                                   WidthRequest="180"
+                                   HeightRequest="180"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Border>
+
+                    </VerticalStackLayout>
+                </Border>
             </Border>
 
-            <Button Text="Voltar para o inicio"
+            <!-- AÇÕES -->
+            <Button Text="Voltar para o início"
                     FontFamily="CanvasInline"
                     BackgroundColor="#D9BBAB"
                     TextColor="Black"
-                    CornerRadius="25"
+                    CornerRadius="22"
                     WidthRequest="220"
-                    HeightRequest="55"
+                    HeightRequest="52"
                     HorizontalOptions="Center"
                     BorderColor="Black"
                     BorderWidth="2"
-                    FontSize="30"
-                    Clicked="OnInicioClicked"/>
+                    FontSize="20"
+                    Clicked="OnInicioClicked" />
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

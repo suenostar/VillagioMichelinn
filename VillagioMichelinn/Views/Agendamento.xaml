@@ -17,8 +17,7 @@
             <!-- Título -->
             <Label Text="Agendamento"    
                    FontSize="30"
-                   FontFamily="CanvasInline"
-                   />
+                   FontFamily="CanvasInline" />
 
             <!-- Quadrado marrom que engloba tudo -->
             <Border BackgroundColor="#B77F61"
@@ -35,9 +34,7 @@
                     <Label Text="Data"
                            TextColor="Black"
                            FontFamily="CanvasInline"
-                           FontSize="28"
-                           
-                            />
+                           FontSize="28" />
 
                     <!-- Quadrado branco com calendário -->
                     <Border BackgroundColor="White"
@@ -403,22 +400,24 @@
                                         <!-- GRUPO 1: Passeio + Café da manhã -->
                                         <HorizontalStackLayout Spacing="10" Margin="0,0,0,-15">
                                             <Label Text="Café caipira (Completo) R$75,00"
-           FontFamily="SourceSans" FontSize="15"
-           VerticalOptions="Center" TextColor="Black"/>
+                                                   FontFamily="SourceSans" FontSize="15"
+                                                   VerticalOptions="Center" TextColor="Black"/>
+                                            
                                             <CheckBox x:Name="CafePasseioCaipiraCheckBox"
-              Color="#D9BBAB" WidthRequest="48" HeightRequest="48"
-              VerticalOptions="Center"
-              CheckedChanged="OnCafeCheckedChanged"/>
+                                                      Color="#D9BBAB" WidthRequest="48" HeightRequest="48"
+                                                      VerticalOptions="Center"
+                                                      CheckedChanged="OnCafeCheckedChanged"/>
                                         </HorizontalStackLayout>
 
                                         <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
                                             <Label Text="Café rural (Reduzido) R$60,00"
-           FontFamily="SourceSans" FontSize="15"
-           VerticalOptions="Center" TextColor="Black"/>
+                                                   FontFamily="SourceSans" FontSize="15"
+                                                   VerticalOptions="Center" TextColor="Black"/>
+                                            
                                             <CheckBox x:Name="CafePasseioRuralCheckBox"
-              Color="#D9BBAB" WidthRequest="48" HeightRequest="48"
-              VerticalOptions="Center"
-              CheckedChanged="OnCafeCheckedChanged"/>
+                                                      Color="#D9BBAB" WidthRequest="48" HeightRequest="48"
+                                                      VerticalOptions="Center"
+                                                      CheckedChanged="OnCafeCheckedChanged"/>
                                         </HorizontalStackLayout>
 
                                     </VerticalStackLayout>
@@ -458,30 +457,31 @@
                                         <!-- Grupo 2: Café da manhã -->
                                         <HorizontalStackLayout Spacing="10" Margin="0,0,0,-15">
                                             <Label Text="Café caipira (Completo) R$75,00"
-           FontFamily="SourceSans"
-           FontSize="15"
-           VerticalOptions="Center"
-           TextColor="Black" />
+                                                   FontFamily="SourceSans"
+                                                   FontSize="15"
+                                                   VerticalOptions="Center"
+                                                   TextColor="Black" />
+                                            
                                             <CheckBox x:Name="CafeManhaCaipiraCheckBox"
-              Color="#D9BBAB"
-              WidthRequest="48"
-              HeightRequest="48"
-              VerticalOptions="Center"
-              CheckedChanged="OnCafeCheckedChanged" />
+                                                      Color="#D9BBAB"
+                                                      WidthRequest="48"
+                                                      HeightRequest="48"
+                                                      VerticalOptions="Center"
+                                                      CheckedChanged="OnCafeCheckedChanged" />
                                         </HorizontalStackLayout>
 
                                         <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
                                             <Label Text="Café rural (Reduzido) R$60,00"
-           FontFamily="SourceSans"
-           FontSize="15"
-           VerticalOptions="Center" 
-           TextColor="Black" />
+                                                   FontFamily="SourceSans"
+                                                   VerticalOptions="Center"
+                                                   TextColor="Black" />
+                                            
                                             <CheckBox x:Name="CafeManhaRuralCheckBox"
-              Color="#D9BBAB"
-              WidthRequest="48"
-              HeightRequest="48"
-              VerticalOptions="Center"
-              CheckedChanged="OnCafeCheckedChanged" />
+                                                      Color="#D9BBAB"
+                                                      WidthRequest="48"
+                                                      HeightRequest="48"
+                                                      VerticalOptions="Center"
+                                                      CheckedChanged="OnCafeCheckedChanged" />
                                         </HorizontalStackLayout>
 
                                         <!-- Adicione outras linhas aqui seguindo o mesmo padrão -->
@@ -768,6 +768,7 @@
                                     Padding="10"
                                     Margin="10,20,10,0"
                                     WidthRequest="300">
+                                
                                 <Label Text="Aviso: Criança de 0 a 5 anos não pagam e Criança de 06 a 12 anos pagam meia."
                                        FontSize="18"
                                        FontFamily="SourceSans"
@@ -806,24 +807,20 @@
                     </HorizontalStackLayout>
                 </Border>
 
-
-
                 <!-- Botão Trocar pacote (RESET NEUTRO) -->
                 <Button Text="Trocar pacote"
-            FontFamily="CanvasInline"
-            BackgroundColor="#EEE"
-            TextColor="Black"
-            CornerRadius="20"
-            WidthRequest="220"
-            HeightRequest="50"
-            HorizontalOptions="Center"
-            BorderColor="Black"
-            BorderWidth="1.5"
-            Clicked="OnTrocarPacoteClicked"/>
-
+                        FontFamily="CanvasInline"
+                        BackgroundColor="#EEE"
+                        TextColor="Black"
+                        CornerRadius="20"
+                        WidthRequest="220"
+                        HeightRequest="50"
+                        HorizontalOptions="Center"
+                        BorderColor="Black"
+                        BorderWidth="1.5"
+                        Clicked="OnTrocarPacoteClicked"/>
 
                 <!-- Botão Pagar -->
-
                 <Button Text="Pagar"
                         FontFamily="CanvasInline"
                         BackgroundColor="#D9BBAB"
