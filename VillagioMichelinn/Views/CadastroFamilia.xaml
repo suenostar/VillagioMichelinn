@@ -3,8 +3,8 @@
              x:Class="VillagioMichelinn.CadastroFamilia"
              Title="Cadastro"
              BackgroundColor="White">
-
-    <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Center">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Center">
 
         <!-- Logo -->
         <Image Source="Logo_villagio_v2.png"
@@ -61,7 +61,9 @@
                         BorderColor="#445738"
                         BorderWidth="2"/>
 
-                <!-- Link para login -->
+                    
+
+                    <!-- Link para login -->
                 <Label Text="Já tenho um cadastro"
                       
                        FontFamily="SourceSans"
@@ -78,6 +80,7 @@
             </VerticalStackLayout>
         </Border>
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
 
 

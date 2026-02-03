@@ -48,5 +48,14 @@ namespace VillagioMichelinn
                 await DisplayAlert("Erro", $"Erro de conexão: {ex.Message}", "OK");
             }
         }
+
+        private async void OnTesteClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Agendamento());
+        }
+        private async void OnTestesClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Reservas());
+        }
     }
 }

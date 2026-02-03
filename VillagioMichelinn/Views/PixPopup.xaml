@@ -36,6 +36,7 @@
                     BorderWidth="1.5"
                     CornerRadius="20"
                     HeightRequest="45"
+                    Margin="20"
                     Clicked="OnFecharClicked"/>
         </VerticalStackLayout>
 

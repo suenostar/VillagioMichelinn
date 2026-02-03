@@ -3,8 +3,8 @@
              x:Class="VillagioMichelinn.EntrarFamilia"
              Title="Entrar"
              BackgroundColor="White">
-
-    <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Center">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Center">
 
         <!-- Logo -->
         <Image Source="Logo_villagio_v2.png"
@@ -55,7 +55,34 @@
                         BorderColor="#445738"
                         BorderWidth="2"/>
 
-            </VerticalStackLayout>
+                    <!-- Botão ex -->
+                    <Button Text="Cadastrar"
+FontFamily="SourceSans"
+FontSize="18"
+BackgroundColor="#8E7C94"
+TextColor="Black"
+       
+CornerRadius="20"
+WidthRequest="200"
+HorizontalOptions="Center"
+Clicked="OnTesteClicked"
+BorderColor="#445738"
+BorderWidth="2"/>
+                    <Button Text="Cadastrar"
+FontFamily="SourceSans"
+FontSize="18"
+BackgroundColor="#8E7C94"
+TextColor="Black"
+       
+CornerRadius="20"
+WidthRequest="200"
+HorizontalOptions="Center"
+Clicked="OnTestesClicked"
+BorderColor="#445738"
+BorderWidth="2"/>
+
+                </VerticalStackLayout>
         </Border>
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
