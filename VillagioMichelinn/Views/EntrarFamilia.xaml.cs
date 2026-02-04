@@ -55,7 +55,7 @@ namespace VillagioMichelinn
         }
         private async void OnTestesClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Reservas());
+            await Navigation.PushAsync(new Inicio());
         }
     }
 }

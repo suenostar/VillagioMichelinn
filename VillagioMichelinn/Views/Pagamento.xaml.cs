@@ -45,7 +45,7 @@ namespace VillagioMichelinn
 
         private async void OnInicioClicked(object sender, EventArgs e)
         {
-            await Navigation.PopToRootAsync(true);
+            await Navigation.PushAsync(new Inicio());
         }
     }
 }

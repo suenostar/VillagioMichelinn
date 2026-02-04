@@ -3,9 +3,9 @@ using Microsoft.Maui.Controls;
 
 namespace VillagioMichelinn
 {
-    public partial class Reservas : ContentPage
+    public partial class Inicio : ContentPage
     {
-        public Reservas()
+        public Inicio()
         {
             InitializeComponent();
         }

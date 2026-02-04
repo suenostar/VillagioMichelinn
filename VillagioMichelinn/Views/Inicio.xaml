@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="VillagioMichelinn.Reservas"
-             Title="Reservas">
+             x:Class="VillagioMichelinn.Inicio"
+             Title="Inicio">
 
     <VerticalStackLayout Spacing="10" Padding="20">
 
@@ -40,7 +40,6 @@
                     Padding="15">
 
                     <Grid>
-
                         <!-- Textos da reserva -->
                         <VerticalStackLayout Spacing="8">
                             <Label Text="valor" FontSize="18" TextColor="Black"/>
