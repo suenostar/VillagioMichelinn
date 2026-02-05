@@ -54,7 +54,6 @@
                                 <TapGestureRecognizer Tapped="OnMenuClicked"/>
                             </Label.GestureRecognizers>
                         </Label>
-
                     </Grid>
                 </Border>
 
@@ -91,9 +90,8 @@
                         </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </Border>
-
-            </VerticalStackLayout>
-        </Border>
+            </VerticalStackLayout> 
+        </Border> 
 
         <Button 
             Text="Nova reserva"
