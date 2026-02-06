@@ -284,7 +284,7 @@
 
                                         <!-- Adulto -->
                                         <HorizontalStackLayout Spacing="20">
-                                            <Label Text="Adulto (R$12,00):"
+                                            <Label Text="Adulto (R$15,00):"
                                                    FontFamily="SourceSans"
                                                    FontSize="15"
                                                    VerticalOptions="Center"
@@ -326,7 +326,7 @@
 
                                         <!-- Meia -->
                                         <HorizontalStackLayout Spacing="20">
-                                            <Label Text="Meia (R$6,00):"
+                                            <Label Text="Meia (R$7,50):"
                                                    FontFamily="SourceSans"
                                                    FontSize="15"
                                                    VerticalOptions="Center"
@@ -454,6 +454,9 @@
                                     <!-- O Border também só pode ter UM filho: aqui agrupamos tudo num VerticalStackLayout -->
                                     <VerticalStackLayout Spacing="1">
 
+                                        
+                                        
+                                        
                                         <!-- Grupo 2: Café da manhã -->
                                         <HorizontalStackLayout Spacing="10" Margin="0,0,0,-15">
                                             <Label Text="Café caipira (Completo) R$75,00"
@@ -834,7 +837,6 @@
                         FontSize="30"
                         Clicked="OnPagarClicked"/>
             </VerticalStackLayout>
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

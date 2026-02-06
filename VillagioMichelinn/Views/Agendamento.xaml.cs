@@ -19,8 +19,8 @@ namespace VillagioMichelinn
         private int meia = 0;
         private int naoPagante = 0;
 
-        private decimal precoAdulto = 12m;
-        private decimal precoMeia = 6m;
+        private decimal precoAdulto = 15m;
+        private decimal precoMeia = 7.5m;
 
         // Cafés
         private decimal precoCafeCaipira = 75m;
