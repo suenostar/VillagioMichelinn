@@ -14,7 +14,7 @@ namespace VillagioMichelinn
         private Button? selectedDayButton = null;
         private Button? selectedHorarioButton = null;
 
-        // Ingressos (para modo Passeio)
+        // Ingressos (Passeio)
         private int adulto = 0;
         private int meia = 0;
         private int naoPagante = 0;
@@ -22,21 +22,14 @@ namespace VillagioMichelinn
         private decimal precoAdulto = 15m;
         private decimal precoMeia = 7.5m;
 
-        // Cafés
-        private decimal precoCafeCaipira = 75m;
-        private decimal precoCafeRural = 60m;
+        // Café da manhã (avulso) – único tipo
+        private decimal precoCafeManha = 70m;
 
-        // Combos Agência
-        private decimal precoPasseioAgenciaOpcao1 = 12m; // Opção 1 soma com 1 café (caipira ou rural)
-        private decimal precoPasseioAgenciaOpcao2 = 15m; // Opção 2 é só passeio
+        // Combo Família (única opção)
+        private decimal precoComboFamilia = 82m; // R$70 + R$12
 
-        // Combo Família (já formatado no layout)
-        private decimal precoComboFamiliaOpcao1 = 87m; // total pronto
-        private decimal precoComboFamiliaOpcao2 = 15m; // só passeio
-
-        // Visibilidade / Regra de agência x família
-        private bool isAgenciaLogin = false;      // <- ajuste aqui conforme o login
-        private bool agendamentoFamilia = true;   // true = família (bloqueia seg-sex), false = agência
+        // Família: calendário bloqueia seg-sex
+        private bool agendamentoFamilia = true;
 
         private static readonly CultureInfo ptBR = new("pt-BR");
 
@@ -61,12 +54,9 @@ namespace VillagioMichelinn
         private enum SelectedMode
         {
             None,
-            Passeio,                 // Ingressos + (opcional) Café do Grupo 1
-            CafeManha,               // Café do Grupo 2 (sem ingressos)
-            ComboFamiliaOpcao1,      // total fechado
-            ComboFamiliaOpcao2,      // total fechado
-            ComboAgenciaOpcao1,      // 1 café (agência) + taxa 12
-            ComboAgenciaOpcao2       // só passeio 15
+            Passeio,        // Ingressos (adulto/meia)
+            CafeManha,      // Café avulso (1 tipo)
+            ComboFamilia    // Total fechado R$82
         }
 
         private SelectedMode modoSelecionado = SelectedMode.None;
@@ -75,28 +65,21 @@ namespace VillagioMichelinn
         {
             InitializeComponent();
 
-            // 1) Defina aqui com base no login real:
-            //    - true  => login é de agência
-            //    - false => login é de família/visitante
-            isAgenciaLogin = true;               // <-- ajuste isso dinamicamente (ex.: vindo do auth)
-            agendamentoFamilia = !isAgenciaLogin;
+            // Família por padrão (bloqueia seg-sex no calendário)
+            agendamentoFamilia = true;
 
-            // 2) Mostra/oculta o expander da Agência com base no login
-            if (FindByName("expAgencia") is View expAgenciaView)
-                expAgenciaView.IsVisible = isAgenciaLogin;
-
-            // 3) Agora sim, constrói o calendário e a UI dinâmica
+            // Monta calendário e UI dinâmica
             BuildCalendar(currentMonth);
             AtualizarSafra(currentMonth);
 
-            // 4) Horários só habilitam depois de escolher o dia
+            // Horários só habilitam após escolher o dia
             SetHorariosEnabled(false);
 
-            // 5) Total inicial
+            // Total inicial
             AtualizarTotal();
         }
 
-        // =================== Calendário ===================
+        // =================== Calendário (INALTERADO) ===================
         private void BuildCalendar(DateTime month)
         {
             CalendarGrid.Children.Clear();
@@ -131,7 +114,7 @@ namespace VillagioMichelinn
                     btn.IsEnabled = false;
                 }
 
-                // Se for agendamento de família: bloquear seg-sex
+                // Família: bloquear seg-sex
                 if (agendamentoFamilia &&
                     date.DayOfWeek >= DayOfWeek.Monday &&
                     date.DayOfWeek <= DayOfWeek.Friday)
@@ -140,7 +123,7 @@ namespace VillagioMichelinn
                     btn.IsEnabled = false;
                 }
 
-                // Destaque do dia de HOJE (se habilitado)
+                // Destaque do dia atual (se habilitado)
                 if (date.Date == DateTime.Today && btn.IsEnabled)
                 {
                     btn.BorderColor = Colors.DarkGreen;
@@ -172,14 +155,13 @@ namespace VillagioMichelinn
             }
         }
 
-        // =================== Navegação de mês ===================
         private void OnPreviousMonthClicked(object sender, EventArgs e)
         {
             currentMonth = currentMonth.AddMonths(-1);
             BuildCalendar(currentMonth);
             AtualizarSafra(currentMonth);
 
-            // Ao mudar o mês, zera seleção de dia e horários
+            // Zera seleção de dia/horário
             if (selectedDayButton != null)
             {
                 selectedDayButton.BackgroundColor = Colors.LightGreen;
@@ -204,7 +186,6 @@ namespace VillagioMichelinn
             SetHorariosEnabled(false);
         }
 
-        // =================== Seleção de dia/horário ===================
         private void OnDayClicked(object? sender, EventArgs e)
         {
             if (selectedDayButton != null)
@@ -219,15 +200,15 @@ namespace VillagioMichelinn
                     "OK");
             }
 
-            // Habilita horários somente após escolher um dia
             SetHorariosEnabled(true);
         }
+        // =================== FIM: Calendário (INALTERADO) ===================
 
+        // =================== Horários ===================
         private void SetHorariosEnabled(bool enabled)
         {
             if (HorariosFlex is null) return;
 
-            // (opcional) bloquear cliques no contêiner inteiro
             HorariosFlex.IsEnabled = enabled;
 
             foreach (var b in HorariosFlex.Children.OfType<Button>())
@@ -261,7 +242,6 @@ namespace VillagioMichelinn
         // =================== Ingressos: + / - ===================
         private void OnAdultoMais(object sender, EventArgs e)
         {
-            // Ao mexer em ingressos, modo vira Passeio
             SetMode(SelectedMode.Passeio);
             adulto++;
             AdultoCount!.Text = adulto.ToString();
@@ -294,7 +274,6 @@ namespace VillagioMichelinn
 
         private void OnNaoPaganteMais(object sender, EventArgs e)
         {
-            // Não entra no total, mas mantemos a contagem
             naoPagante++;
             NaoPaganteCount!.Text = naoPagante.ToString();
         }
@@ -305,108 +284,41 @@ namespace VillagioMichelinn
             NaoPaganteCount!.Text = naoPagante.ToString();
         }
 
-        // =================== Café / Combos – handler ÚNICO ===================
-       
+        // =================== Café / Combo Família ===================
         private void OnCafeCheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             if (sender == null) return;
 
-            // ===== Grupo 1: Passeio + Café da manhã =====
-            if (sender == CafePasseioCaipiraCheckBox)
-            {
-                if (e.Value)
-                {
-                    SetMode(SelectedMode.Passeio);
-                    CafePasseioRuralCheckBox.IsChecked = false;
-                }
-                AtualizarTotal();
-                return;
-            }
-            if (sender == CafePasseioRuralCheckBox)
-            {
-                if (e.Value)
-                {
-                    SetMode(SelectedMode.Passeio);
-                    CafePasseioCaipiraCheckBox.IsChecked = false;
-                }
-                AtualizarTotal();
-                return;
-            }
-
-            // ===== Grupo 2: Café da manhã (avulso) =====
-            if (sender == CafeManhaCaipiraCheckBox)
+            // Café da manhã – único checkbox
+            if (sender == CafeManhaCheckBox)
             {
                 if (e.Value)
                 {
                     SetMode(SelectedMode.CafeManha);
-                    CafeManhaRuralCheckBox.IsChecked = false;
-                }
-                AtualizarTotal();
-                return;
-            }
-            if (sender == CafeManhaRuralCheckBox)
-            {
-                if (e.Value)
-                {
-                    SetMode(SelectedMode.CafeManha);
-                    CafeManhaCaipiraCheckBox.IsChecked = false;
-                }
-                AtualizarTotal();
-                return;
-            }
-
-            // ===== Combo Agência =====
-            if (sender == CFCPagenciaCheckBox) // café caipira + taxa 12
-            {
-                if (e.Value)
-                {
-                    SetMode(SelectedMode.ComboAgenciaOpcao1);
-                    CFRLagenciaCheckBox.IsChecked = false;
-                    PasseioagenciaCheckBox.IsChecked = false; // não pode simultâneo com opção 2
-                }
-                AtualizarTotal();
-                return;
-            }
-            if (sender == CFRLagenciaCheckBox) // café rural + taxa 12
-            {
-                if (e.Value)
-                {
-                    SetMode(SelectedMode.ComboAgenciaOpcao1);
-                    CFCPagenciaCheckBox.IsChecked = false;
-                    PasseioagenciaCheckBox.IsChecked = false;
-                }
-                AtualizarTotal();
-                return;
-            }
-            if (sender == PasseioagenciaCheckBox) // só passeio 15
-            {
-                if (e.Value)
-                {
-                    SetMode(SelectedMode.ComboAgenciaOpcao2);
-                    CFCPagenciaCheckBox.IsChecked = false;
-                    CFRLagenciaCheckBox.IsChecked = false;
-                }
-                AtualizarTotal();
-                return;
-            }
-
-            // ===== Combo Família =====
-            if (sender == CombofamiliaCheckBox) // total R$87
-            {
-                if (e.Value)
-                {
-                    SetMode(SelectedMode.ComboFamiliaOpcao1);
-                    PasseiofamiliaCheckBox.IsChecked = false;
-                }
-                AtualizarTotal();
-                return;
-            }
-            if (sender == PasseiofamiliaCheckBox) // só passeio R$15
-            {
-                if (e.Value)
-                {
-                    SetMode(SelectedMode.ComboFamiliaOpcao2);
                     CombofamiliaCheckBox.IsChecked = false;
+                }
+                else
+                {
+                    if (modoSelecionado == SelectedMode.CafeManha)
+                        modoSelecionado = SelectedMode.None;
+                }
+                AtualizarTotal();
+                return;
+            }
+
+            // Combo Família (única opção)
+            if (sender == CombofamiliaCheckBox)
+            {
+                if (e.Value)
+                {
+                    SetMode(SelectedMode.ComboFamilia);
+                    ResetIngressos();
+                    ClearCafeManha();
+                }
+                else
+                {
+                    if (modoSelecionado == SelectedMode.ComboFamilia)
+                        modoSelecionado = SelectedMode.None;
                 }
                 AtualizarTotal();
                 return;
@@ -420,58 +332,34 @@ namespace VillagioMichelinn
 
             modoSelecionado = novoModo;
 
-            // Exclusividade entre pacotes:
             switch (novoModo)
             {
                 case SelectedMode.Passeio:
                     expPasseio.IsEnabled = true;
                     expCafe.IsEnabled = false;
                     expFamilia.IsEnabled = false;
-                    if (FindByName("expAgencia") is View expAgenciaView)
-                        expAgenciaView.IsEnabled = false;
 
-                    ClearCafeGrupo2();
-                    ClearCombos();
+                    // Limpa outros pacotes
+                    ClearComboFamilia();
+                    ClearCafeManha();
                     break;
 
                 case SelectedMode.CafeManha:
                     expPasseio.IsEnabled = false;
                     expCafe.IsEnabled = true;
                     expFamilia.IsEnabled = false;
-                    if (FindByName("expAgencia") is View expAgenciaView2)
-                        expAgenciaView2.IsEnabled = false;
 
                     ResetIngressos();
-                    ClearCafeGrupo1();
-                    ClearCombos();
+                    ClearComboFamilia();
                     break;
 
-                case SelectedMode.ComboFamiliaOpcao1:
-                case SelectedMode.ComboFamiliaOpcao2:
+                case SelectedMode.ComboFamilia:
                     expPasseio.IsEnabled = false;
                     expCafe.IsEnabled = false;
                     expFamilia.IsEnabled = true;
-                    if (FindByName("expAgencia") is View expAgenciaView3)
-                        expAgenciaView3.IsEnabled = false;
 
                     ResetIngressos();
-                    ClearCafeGrupo1();
-                    ClearCafeGrupo2();
-                    ClearComboAgencia();
-                    break;
-
-                case SelectedMode.ComboAgenciaOpcao1:
-                case SelectedMode.ComboAgenciaOpcao2:
-                    expPasseio.IsEnabled = false;
-                    expCafe.IsEnabled = false;
-                    expFamilia.IsEnabled = false;
-                    if (FindByName("expAgencia") is View expAgenciaView4)
-                        expAgenciaView4.IsEnabled = true;
-
-                    ResetIngressos();
-                    ClearCafeGrupo1();
-                    ClearCafeGrupo2();
-                    ClearComboFamilia();
+                    ClearCafeManha();
                     break;
 
                 case SelectedMode.None:
@@ -479,8 +367,6 @@ namespace VillagioMichelinn
                     expPasseio.IsEnabled = true;
                     expCafe.IsEnabled = true;
                     expFamilia.IsEnabled = true;
-                    if (FindByName("expAgencia") is View expAgenciaView5)
-                        expAgenciaView5.IsEnabled = isAgenciaLogin;
                     break;
             }
 
@@ -495,35 +381,14 @@ namespace VillagioMichelinn
             NaoPaganteCount!.Text = "0";
         }
 
-        private void ClearCafeGrupo1()
+        private void ClearCafeManha()
         {
-            if (CafePasseioCaipiraCheckBox != null) CafePasseioCaipiraCheckBox.IsChecked = false;
-            if (CafePasseioRuralCheckBox != null) CafePasseioRuralCheckBox.IsChecked = false;
-        }
-
-        private void ClearCafeGrupo2()
-        {
-            if (CafeManhaCaipiraCheckBox != null) CafeManhaCaipiraCheckBox.IsChecked = false;
-            if (CafeManhaRuralCheckBox != null) CafeManhaRuralCheckBox.IsChecked = false;
-        }
-
-        private void ClearComboAgencia()
-        {
-            if (CFCPagenciaCheckBox != null) CFCPagenciaCheckBox.IsChecked = false;
-            if (CFRLagenciaCheckBox != null) CFRLagenciaCheckBox.IsChecked = false;
-            if (PasseioagenciaCheckBox != null) PasseioagenciaCheckBox.IsChecked = false;
+            if (CafeManhaCheckBox != null) CafeManhaCheckBox.IsChecked = false;
         }
 
         private void ClearComboFamilia()
         {
             if (CombofamiliaCheckBox != null) CombofamiliaCheckBox.IsChecked = false;
-            if (PasseiofamiliaCheckBox != null) PasseiofamiliaCheckBox.IsChecked = false;
-        }
-
-        private void ClearCombos()
-        {
-            ClearComboAgencia();
-            ClearComboFamilia();
         }
 
         // =================== Total ===================
@@ -536,40 +401,15 @@ namespace VillagioMichelinn
                 case SelectedMode.Passeio:
                     total += adulto * precoAdulto;
                     total += meia * precoMeia;
-
-                    if (CafePasseioCaipiraCheckBox?.IsChecked == true)
-                        total += precoCafeCaipira;
-                    if (CafePasseioRuralCheckBox?.IsChecked == true)
-                        total += precoCafeRural;
                     break;
 
                 case SelectedMode.CafeManha:
-                    if (CafeManhaCaipiraCheckBox?.IsChecked == true)
-                        total += precoCafeCaipira;
-                    if (CafeManhaRuralCheckBox?.IsChecked == true)
-                        total += precoCafeRural;
+                    if (CafeManhaCheckBox?.IsChecked == true)
+                        total += precoCafeManha;
                     break;
 
-                case SelectedMode.ComboFamiliaOpcao1:
-                    total = precoComboFamiliaOpcao1; // total pronto
-                    break;
-
-                case SelectedMode.ComboFamiliaOpcao2:
-                    total = precoComboFamiliaOpcao2; // total pronto
-                    break;
-
-                case SelectedMode.ComboAgenciaOpcao1:
-                    // 1 café (caipira ou rural) + taxa 12
-                    total += precoPasseioAgenciaOpcao1;
-                    if (CFCPagenciaCheckBox?.IsChecked == true)
-                        total += precoCafeCaipira;
-                    else if (CFRLagenciaCheckBox?.IsChecked == true)
-                        total += precoCafeRural;
-                    break;
-
-                case SelectedMode.ComboAgenciaOpcao2:
-                    // só passeio 15
-                    total = precoPasseioAgenciaOpcao2;
+                case SelectedMode.ComboFamilia:
+                    total = precoComboFamilia;
                     break;
 
                 case SelectedMode.None:
@@ -587,29 +427,20 @@ namespace VillagioMichelinn
             // Volta para estado neutro
             modoSelecionado = SelectedMode.None;
 
-            // Limpa seleções de pacotes/itens
+            // Limpa seleções e reabilita grupos
             ResetIngressos();
-            ClearCafeGrupo1();
-            ClearCafeGrupo2();
-            ClearCombos();
+            ClearCafeManha();
+            ClearComboFamilia();
 
-            // Reabilita todos os grupos (respeitando login de agência)
             expPasseio.IsEnabled = true;
             expCafe.IsEnabled = true;
             expFamilia.IsEnabled = true;
-            if (FindByName("expAgencia") is View expAgenciaView)
-                expAgenciaView.IsEnabled = isAgenciaLogin;
 
-            // Colapsa todos os expansores para limpeza visual
+            // Colapsa todos
             expPasseio.IsExpanded = false;
             expCafe.IsExpanded = false;
             expFamilia.IsExpanded = false;
-    
-            var expAg = FindByName("expAgencia");
-            if (expAg is CommunityToolkit.Maui.Views.Expander ag)
-                ag.IsExpanded = false;
 
-            // Recalcula total (zerado)
             AtualizarTotal();
         }
 
@@ -629,7 +460,7 @@ namespace VillagioMichelinn
             }
             if (modoSelecionado == SelectedMode.None)
             {
-                await DisplayAlert("Atenção", "Escolha um pacote: Passeio, Café da manhã, Combo Família ou Combo Agência.", "OK");
+                await DisplayAlert("Atenção", "Escolha um pacote: Passeio, Café da manhã ou Combo Família.", "OK");
                 return;
             }
 
@@ -639,47 +470,30 @@ namespace VillagioMichelinn
                 case SelectedMode.Passeio:
                     if (adulto + meia <= 0)
                     {
-                        await DisplayAlert("Atenção", "Adicione pelo menos 1 ingresso pago (Adulto ou Meia) para o Passeio.", "OK");
+                        await DisplayAlert("Atenção", "Adicione pelo menos 1 ingresso pago (Adulto ou Meia).", "OK");
                         return;
                     }
                     break;
 
                 case SelectedMode.CafeManha:
-                    if (!(CafeManhaCaipiraCheckBox?.IsChecked == true || CafeManhaRuralCheckBox?.IsChecked == true))
+                    if (CafeManhaCheckBox?.IsChecked != true)
                     {
-                        await DisplayAlert("Atenção", "Selecione 1 café (Caipira ou Rural) em 'Café da manhã'.", "OK");
+                        await DisplayAlert("Atenção", "Marque o Café da manhã.", "OK");
                         return;
                     }
                     break;
 
-                case SelectedMode.ComboFamiliaOpcao1:
-                case SelectedMode.ComboFamiliaOpcao2:
-                    // Já são exclusivos e fechados (ok)
-                    break;
-
-                case SelectedMode.ComboAgenciaOpcao1:
-                    // precisa exatamente 1 café
-                    bool agCafe1 = CFCPagenciaCheckBox?.IsChecked == true;
-                    bool agCafe2 = CFRLagenciaCheckBox?.IsChecked == true;
-                    if ((agCafe1 ? 1 : 0) + (agCafe2 ? 1 : 0) != 1)
+                case SelectedMode.ComboFamilia:
+                    if (CombofamiliaCheckBox?.IsChecked != true)
                     {
-                        await DisplayAlert("Atenção", "Na Agência Opção 1 selecione exatamente 1 café (Caipira ou Rural).", "OK");
-                        return;
-                    }
-                    break;
-
-                case SelectedMode.ComboAgenciaOpcao2:
-                    if (PasseioagenciaCheckBox?.IsChecked != true)
-                    {
-                        await DisplayAlert("Atenção", "Na Agência Opção 2 selecione o passeio.", "OK");
+                        await DisplayAlert("Atenção", "Marque o Combo Família.", "OK");
                         return;
                     }
                     break;
             }
 
-            // Tudo certo -> seguir para pagamento
+            // OK -> segue para pagamento
             await Navigation.PushAsync(new Pagamento());
         }
     }
 }
-

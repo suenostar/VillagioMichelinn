@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="VillagioMichelinn.Inicio"
              Title="Inicio">
+    <ScrollView >
 
     <VerticalStackLayout Spacing="10" Padding="20">
 
@@ -36,15 +37,15 @@
                     Stroke="Black"
                     StrokeThickness="1"
                     StrokeShape="RoundRectangle 25"
-                    HeightRequest="250"
+                    HeightRequest="130"
                     Padding="15">
 
                     <Grid>
                         <!-- Textos da reserva -->
                         <VerticalStackLayout Spacing="8">
-                            <Label Text="valor" FontSize="18" TextColor="Black"/>
-                            <Label Text="data" FontSize="18" TextColor="Black"/>
                             <Label Text="nome de quem agendou" FontSize="18" TextColor="Black"/>
+                            <Label Text="data e horario" FontSize="18" TextColor="Black"/>
+                            <Label Text="valor" FontSize="18" TextColor="Black"/>
                         </VerticalStackLayout>
 
                         <!-- Botão de menu (⋮) -->
@@ -57,6 +58,32 @@
                     </Grid>
                 </Border>
 
+                <Border
+                    BackgroundColor="White"
+                    Stroke="Black"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 25"
+                    HeightRequest="130"
+                    Padding="15">
+
+                    <Grid>
+                        <!-- Textos da reserva -->
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="nome de quem agendou" FontSize="18" TextColor="Black"/>
+                            <Label Text="data e horario" FontSize="18" TextColor="Black"/>
+                            <Label Text="valor" FontSize="18" TextColor="Black"/>
+                        </VerticalStackLayout>
+
+                        <!-- Botão de menu (⋮) -->
+                        <Label Text="⋮" FontSize="28" TextColor="Black" HorizontalOptions="End" VerticalOptions="Start">
+
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnMenuClicked"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                </Border>
+                
                 <!-- Popup: Cancelar reserva? (inicialmente oculto) -->
                 <Border x:Name="CancelCard"
                         BackgroundColor="White"
@@ -108,4 +135,6 @@
             Clicked="OnNreservaClicked"/>
 
     </VerticalStackLayout>
+    
+    </ScrollView>
 </ContentPage>

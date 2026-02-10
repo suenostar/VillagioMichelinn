@@ -30,6 +30,7 @@
                    LineBreakMode="WordWrap"/>
 
             <Button Text="{Binding TextoBotao}"
+                    TextColor="Black"
                     FontSize="16"
                     BackgroundColor="#D9BBAB"
                     BorderColor="Black"

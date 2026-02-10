@@ -394,32 +394,6 @@
                                             </Button>
                                         </HorizontalStackLayout>
 
-                                        <Label Text="Passeio mais cáfe da manhã" FontFamily="SourceSans" FontSize="18" TextColor="Black"/>
-
-
-                                        <!-- GRUPO 1: Passeio + Café da manhã -->
-                                        <HorizontalStackLayout Spacing="10" Margin="0,0,0,-15">
-                                            <Label Text="Café caipira (Completo) R$75,00"
-                                                   FontFamily="SourceSans" FontSize="15"
-                                                   VerticalOptions="Center" TextColor="Black"/>
-                                            
-                                            <CheckBox x:Name="CafePasseioCaipiraCheckBox"
-                                                      Color="#D9BBAB" WidthRequest="48" HeightRequest="48"
-                                                      VerticalOptions="Center"
-                                                      CheckedChanged="OnCafeCheckedChanged"/>
-                                        </HorizontalStackLayout>
-
-                                        <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
-                                            <Label Text="Café rural (Reduzido) R$60,00"
-                                                   FontFamily="SourceSans" FontSize="15"
-                                                   VerticalOptions="Center" TextColor="Black"/>
-                                            
-                                            <CheckBox x:Name="CafePasseioRuralCheckBox"
-                                                      Color="#D9BBAB" WidthRequest="48" HeightRequest="48"
-                                                      VerticalOptions="Center"
-                                                      CheckedChanged="OnCafeCheckedChanged"/>
-                                        </HorizontalStackLayout>
-
                                     </VerticalStackLayout>
                                 </Border>
                             </toolkit:Expander>
@@ -459,36 +433,19 @@
                                         
                                         <!-- Grupo 2: Café da manhã -->
                                         <HorizontalStackLayout Spacing="10" Margin="0,0,0,-15">
-                                            <Label Text="Café caipira (Completo) R$75,00"
+                                            <Label Text="Café R$70,00"
                                                    FontFamily="SourceSans"
                                                    FontSize="15"
                                                    VerticalOptions="Center"
                                                    TextColor="Black" />
-                                            
-                                            <CheckBox x:Name="CafeManhaCaipiraCheckBox"
+
+                                            <CheckBox x:Name="CafeManhaCheckBox"
                                                       Color="#D9BBAB"
                                                       WidthRequest="48"
                                                       HeightRequest="48"
                                                       VerticalOptions="Center"
                                                       CheckedChanged="OnCafeCheckedChanged" />
                                         </HorizontalStackLayout>
-
-                                        <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
-                                            <Label Text="Café rural (Reduzido) R$60,00"
-                                                   FontFamily="SourceSans"
-                                                   VerticalOptions="Center"
-                                                   TextColor="Black" />
-                                            
-                                            <CheckBox x:Name="CafeManhaRuralCheckBox"
-                                                      Color="#D9BBAB"
-                                                      WidthRequest="48"
-                                                      HeightRequest="48"
-                                                      VerticalOptions="Center"
-                                                      CheckedChanged="OnCafeCheckedChanged" />
-                                        </HorizontalStackLayout>
-
-                                        <!-- Adicione outras linhas aqui seguindo o mesmo padrão -->
-
                                     </VerticalStackLayout>
                                 </Border>
 
@@ -499,7 +456,7 @@
                                 <toolkit:Expander.Header>
                                     <Border BackgroundColor="#F4F4F4" Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" Padding="10" Margin="0,8,0,0">
                                         <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
-                                            <Label Text="Combos" FontFamily="CanvasInline" FontSize="20" TextColor="Black" VerticalOptions="Center"/>
+                                            <Label Text="Combo" FontFamily="CanvasInline" FontSize="20" TextColor="Black" VerticalOptions="Center"/>
                                             <BoxView Grid.Column="1" HeightRequest="1" BackgroundColor="Transparent"/>
                                             <Image Grid.Column="2" Source="chevron_down.png" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
                                                 <Image.Triggers>
@@ -516,128 +473,6 @@
                                 <!-- Conteúdo expandido do Combos -->
                                 <VerticalStackLayout Spacing="12" Margin="0,8,0,0">
 
-                                    <!-- Agência -->
-                                    <toolkit:Expander x:Name="expAgencia" IsExpanded="False">
-                                        <toolkit:Expander.Header>
-                                            <Border BackgroundColor="#F4F4F4"
-                                                    Stroke="Black"
-                                                    StrokeThickness="1"
-                                                    StrokeShape="RoundRectangle 10"
-                                                    Padding="10"
-                                                    Margin="0,8,0,0">
-                                                <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
-                                                    <Label Text="Agência"
-                                                           FontFamily="CanvasInline"
-                                                           FontSize="20"
-                                                           TextColor="Black"
-                                                           VerticalOptions="Center" />
-                                                    <BoxView Grid.Column="1" HeightRequest="1" BackgroundColor="Transparent" />
-
-                                                    <!-- Seta -->
-                                                    <Image Grid.Column="2"
-                                                           Source="chevron_down.png"
-                                                           WidthRequest="18"
-                                                           HeightRequest="18"
-                                                           VerticalOptions="Center">
-                                                        <Image.Triggers>
-                                                            <DataTrigger TargetType="Image" Binding="{Binding Source={x:Reference expAgencia}, Path=IsExpanded}" Value="True">
-                                                                <Setter Property="Rotation" Value="180" />
-                                                            </DataTrigger>
-                                                        </Image.Triggers>
-                                                    </Image>
-                                                </Grid>
-                                            </Border>
-                                        </toolkit:Expander.Header>
-
-                                        <!-- Agencia combo -->
-                                        <Border BackgroundColor="White"
-                                                Stroke="Black"
-                                                Padding="10"
-                                                StrokeThickness="1"
-                                                StrokeShape="RoundRectangle 10"
-                                                Margin="0,8,0,0">
-                                            <VerticalStackLayout Spacing="1">
-
-                                                <!--opc1-->
-                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,2">
-                                                    <Label Text="Opção 1 (obs: Escolha uma opção de café)"
-                                                           FontSize="16"
-                                                           FontFamily="SourceSansBold"  
-                                                           VerticalOptions="Center"
-                                                           TextColor="Black" />
-                                                </HorizontalStackLayout>
-
-                                                <!-- Linha 1: Café caipira -->
-                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,-20">
-                                                    <Label Text="Café caipira (Completo) R$75,00"
-                                                           FontFamily="SourceSans"
-                                                           FontSize="15"
-                                                           VerticalOptions="Center"
-                                                           TextColor="Black" />
-
-                                                    <CheckBox x:Name="CFCPagenciaCheckBox"
-                                                              Color="#D9BBAB"
-                                                              WidthRequest="48"
-                                                              HeightRequest="48"
-                                                              VerticalOptions="Center"
-                                                              CheckedChanged="OnCafeCheckedChanged" />
-                                                </HorizontalStackLayout>
-
-                                                <!-- Linha 2: Café rural (Reduzido) -->
-                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,-10">
-                                                    <Label Text="Café rural (Reduzido) R$60,00"
-                                                           FontFamily="SourceSans"
-                                                           FontSize="15"
-                                                           VerticalOptions="Center"
-                                                           TextColor="Black" />
-
-                                                    <CheckBox x:Name="CFRLagenciaCheckBox"
-                                                              Color="#D9BBAB"
-                                                              WidthRequest="48"
-                                                              HeightRequest="48"
-                                                              VerticalOptions="Center"
-                                                              CheckedChanged="OnCafeCheckedChanged" />
-                                                </HorizontalStackLayout>
-
-                                                <!-- Linha 3: Taxa de passeio -->
-                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
-                                                    <Label Text="Taxa de passeio R$12,00"
-                                                           FontFamily="SourceSans"
-                                                           FontSize="15"
-                                                           VerticalOptions="Center"
-                                                           TextColor="Black" />
-                                                </HorizontalStackLayout>
-
-                                                <!-- Adicionar um logica de calcular total -->
-
-                                                <!--opc2-->
-                                                <HorizontalStackLayout Spacing="10" Margin="0,15,0,0">
-                                                    <Label Text="Opção 2"
-                                                           FontFamily="SourceSansBold" 
-                                                           FontSize="16"
-                                                           VerticalOptions="Center"
-                                                           TextColor="Black" />
-                                                </HorizontalStackLayout>
-
-                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
-                                                    <Label Text="Taxa de passeio R$15,00"
-                                                           FontFamily="SourceSans"
-                                                           VerticalOptions="Center"
-                                                           TextColor="Black" />
-
-                                                    <!-- CheckBox -->
-                                                    <CheckBox x:Name="PasseioagenciaCheckBox"
-                                                              Color="#D9BBAB"
-                                                              WidthRequest="48"
-                                                              HeightRequest="48"
-                                                              VerticalOptions="Center"
-                                                              CheckedChanged="OnCafeCheckedChanged" />
-                                                </HorizontalStackLayout>
-
-                                            </VerticalStackLayout>
-                                        </Border>
-                                    </toolkit:Expander>
-
                                     <!-- Família -->
                                     <toolkit:Expander x:Name="expFamilia" IsExpanded="False">
                                         <toolkit:Expander.Header>
@@ -648,7 +483,7 @@
                                                     Padding="10"
                                                     Margin="0,8,0,0">
                                                 <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
-                                                    <Label Text="Família"
+                                                    <Label Text="Passeio"
                                                            FontFamily="CanvasInline"
                                                            FontSize="20"
                                                            TextColor="Black"
@@ -681,18 +516,11 @@
                                             
                                             <VerticalStackLayout Spacing="1">
 
-                                                <!--opc1-->
-                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,2">
-                                                    <Label Text="Opção 1 (obs: Escolha uma opção de café)"
-                                                           FontSize="16"
-                                                           FontFamily="SourceSansBold"                                            
-                                                           VerticalOptions="Center"
-                                                           TextColor="Black" />
-                                                </HorizontalStackLayout>
+                                                
 
                                                 <!-- Linha 1: Café caipira -->
                                                 <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
-                                                    <Label Text="Café caipira (Completo) R$75,00"
+                                                    <Label Text="Café R$70,00"
                                                            FontFamily="SourceSans" 
                                                            FontSize="15"
                                                            VerticalOptions="Center"
@@ -710,7 +538,7 @@
 
                                                 <!-- Linha 3: Total -->
                                                 <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
-                                                    <Label Text="Total R$87,00"
+                                                    <Label Text="Total R$82,00"
                                                            FontFamily="SourceSans"
                                                            VerticalOptions="Center" 
                                                            FontSize="15"
@@ -718,30 +546,6 @@
 
                                                     <!-- CheckBox -->
                                                     <CheckBox x:Name="CombofamiliaCheckBox"
-                                                              Color="#D9BBAB"
-                                                              WidthRequest="48"
-                                                              HeightRequest="48"
-                                                              VerticalOptions="Center"
-                                                              CheckedChanged="OnCafeCheckedChanged" />
-                                                </HorizontalStackLayout>
-
-                                                <!--opc2-->
-                                                <HorizontalStackLayout Spacing="10" Margin="0,15,0,0">
-                                                    <Label Text="Opção 2"
-                                                           FontFamily="SourceSansBold" 
-                                                           FontSize="16"
-                                                           VerticalOptions="Center"
-                                                           TextColor="Black" />
-                                                </HorizontalStackLayout>
-
-                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
-                                                    <Label Text="Taxa de passeio R$15,00"
-                                                           FontFamily="SourceSans"
-                                                           VerticalOptions="Center"
-                                                           TextColor="Black" />
-
-                                                    <!-- CheckBox -->
-                                                    <CheckBox x:Name="PasseiofamiliaCheckBox"
                                                               Color="#D9BBAB"
                                                               WidthRequest="48"
                                                               HeightRequest="48"

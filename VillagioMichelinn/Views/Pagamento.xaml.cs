@@ -10,7 +10,7 @@ namespace VillagioMichelinn
 {
     public partial class Pagamento : ContentPage
     {
-        private string _pixChave = "0101093764674";
+        private string _pixChave = "05680510847";
 
         public Pagamento()
         {
