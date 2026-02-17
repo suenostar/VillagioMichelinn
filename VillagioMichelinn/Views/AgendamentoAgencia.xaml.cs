@@ -7,12 +7,15 @@ using Microsoft.Maui.Graphics;
 
 namespace VillagioMichelinn
 {
-    public partial class Agendamento : ContentPage
+    public partial class AgendamentoAgencia : ContentPage
     {
         // =================== Estado geral ===================
         private DateTime currentMonth = DateTime.Now;
         private Button? selectedDayButton = null;
         private Button? selectedHorarioButton = null;
+
+        // Limite de dias para agÃªncia: hoje atÃ© hoje + 15 dias
+        private const int LimiteDiasAgencia = 15;
 
         // Ingressos (Passeio)
         private int adulto = 0;
@@ -22,33 +25,25 @@ namespace VillagioMichelinn
         private decimal precoAdulto = 15m;
         private decimal precoMeia = 7.5m;
 
-        // Café da manhã (avulso) – único tipo
+        // CafÃ© da manhÃ£ (avulso)
         private decimal precoCafeManha = 70m;
-
-        // Combo Família (única opção)
-        private decimal precoComboFamilia = 82m; // R$70 + R$12
-
-        // Família: calendário bloqueia seg-sex
-        private bool agendamentoFamilia = true;
 
         private static readonly CultureInfo ptBR = new("pt-BR");
 
-        private const int AntecedenciaMinimaFamilia = 3;
-
-        // Safra por mês
+        // Safra por mÃªs
         private readonly Dictionary<string, string> safraPorMes = new(StringComparer.OrdinalIgnoreCase)
         {
             { "Janeiro", "Uva, Goiaba, Morango, Lichia" },
             { "Fevereiro", "Uva, Goiaba, Morango" },
-            { "Março", "Uva, Goiaba" },
+            { "MarÃ§o", "Uva, Goiaba" },
             { "Abril", "Goiaba, Morango" },
             { "Maio", "Uva, Goiaba, Morango" },
             { "Junho", "Uva, Goiaba, Morango" },
             { "Julho", "Uva, Goiaba, Morango" },
             { "Agosto", "Morango" },
             { "Setembro", "Morango" },
-            { "Outubro", "Pêssego, Morango, Goiaba" },
-            { "Novembro", "Pêssego, Morango, Goiaba" },
+            { "Outubro", "PÃªssego, Morango, Goiaba" },
+            { "Novembro", "PÃªssego, Morango, Goiaba" },
             { "Dezembro", "Uva, Goiaba, Morango, Lichia" }
         };
 
@@ -56,32 +51,28 @@ namespace VillagioMichelinn
         private enum SelectedMode
         {
             None,
-            Passeio,        // Ingressos (adulto/meia)
-            CafeManha,      // Café avulso (1 tipo)
-            ComboFamilia    // Total fechado R$82
+            Passeio,    // Ingressos (adulto/meia)
+            CafeManha   // CafÃ© avulso
         }
 
         private SelectedMode modoSelecionado = SelectedMode.None;
 
-        public Agendamento()
+        public AgendamentoAgencia()
         {
             InitializeComponent();
 
-            // Família por padrão (bloqueia seg-sex no calendário)
-            agendamentoFamilia = true;
-
-            // Monta calendário e UI dinâmica
+            // Monta calendÃ¡rio e UI dinÃ¢mica
             BuildCalendar(currentMonth);
             AtualizarSafra(currentMonth);
 
-            // Horários só habilitam após escolher o dia
+            // HorÃ¡rios sÃ³ habilitam apÃ³s escolher o dia
             SetHorariosEnabled(false);
 
             // Total inicial
             AtualizarTotal();
         }
 
-        // =================== Calendário (INALTERADO) ===================
+        // =================== CalendÃ¡rio ===================
         private void BuildCalendar(DateTime month)
         {
             CalendarGrid.Children.Clear();
@@ -89,12 +80,13 @@ namespace VillagioMichelinn
 
             var firstDay = new DateTime(month.Year, month.Month, 1);
             int daysInMonth = DateTime.DaysInMonth(month.Year, month.Month);
-            int startColumn = (int)firstDay.DayOfWeek; // Domingo=0..Sábado=6
+            int startColumn = (int)firstDay.DayOfWeek; // Domingo=0..SÃ¡bado=6
 
             int row = 0;
             int col = startColumn;
 
             var hoje = DateTime.Today;
+            var minDate = hoje.AddDays(LimiteDiasAgencia); // ex: 15 dias
 
             for (int day = 1; day <= daysInMonth; day++)
             {
@@ -110,41 +102,16 @@ namespace VillagioMichelinn
                     FontSize = 12
                 };
 
-                // 1) Desabilita dias passados
-                if (date.Date < hoje)
+                // Regra da AgÃªncia:
+                // SÃ³ pode agendar a partir de minDate (hoje + 15 dias)
+                if (date.Date < minDate)
                 {
                     btn.BackgroundColor = Colors.LightGray;
                     btn.TextColor = Colors.DarkGray;
                     btn.IsEnabled = false;
                 }
 
-                // 2) Família: bloquear seg-sex (só pode sábado e domingo)
-                if (agendamentoFamilia &&
-                    date.DayOfWeek >= DayOfWeek.Monday &&
-                    date.DayOfWeek <= DayOfWeek.Friday)
-                {
-                    btn.BackgroundColor = Colors.Gray;
-                    btn.IsEnabled = false;
-                }
-
-                // 3) Regra de antecedência de 3 dias para finais de semana
-                //    Só aplica para Sábado e Domingo, e só se o botão ainda estiver habilitado.
-                if (agendamentoFamilia &&
-                    (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) &&
-                    btn.IsEnabled)
-                {
-                    var diferencaDias = (date.Date - hoje).TotalDays;
-
-                    // Se faltar menos de 3 dias para o fim de semana, bloqueia
-                    if (diferencaDias < AntecedenciaMinimaFamilia)
-                    {
-                        btn.BackgroundColor = Colors.LightGray;
-                        btn.TextColor = Colors.DarkGray;
-                        btn.IsEnabled = false;
-                    }
-                }
-
-                // 4) Destaque do dia atual (se habilitado)
+                // Destaque do dia atual (se ainda for clicÃ¡vel)
                 if (date.Date == hoje && btn.IsEnabled)
                 {
                     btn.BorderColor = Colors.DarkGreen;
@@ -168,11 +135,11 @@ namespace VillagioMichelinn
             string nomeMes = mesAtual.ToString("MMMM", ptBR);
             if (safraPorMes.TryGetValue(nomeMes, out var safra))
             {
-                SafraLabel!.Text = $"Frutas disponíveis em {nomeMes}:\n{safra}";
+                SafraLabel!.Text = $"Frutas disponÃ­veis em {nomeMes}:\n{safra}";
             }
             else
             {
-                SafraLabel!.Text = "Safra não disponível.";
+                SafraLabel!.Text = "Safra nÃ£o disponÃ­vel.";
             }
         }
 
@@ -182,7 +149,6 @@ namespace VillagioMichelinn
             BuildCalendar(currentMonth);
             AtualizarSafra(currentMonth);
 
-            // Zera seleção de dia/horário
             if (selectedDayButton != null)
             {
                 selectedDayButton.BackgroundColor = Colors.LightGreen;
@@ -217,15 +183,14 @@ namespace VillagioMichelinn
             {
                 selectedDayButton.BackgroundColor = Colors.Yellow;
                 _ = DisplayAlert("Dia Selecionado",
-                    $"Você escolheu {selectedDayButton.Text}/{currentMonth.Month}/{currentMonth.Year}",
+                    $"VocÃª escolheu {selectedDayButton.Text}/{currentMonth.Month}/{currentMonth.Year}",
                     "OK");
             }
 
             SetHorariosEnabled(true);
         }
-        // =================== FIM: Calendário (INALTERADO) ===================
 
-        // =================== Horários ===================
+        // =================== HorÃ¡rios ===================
         private void SetHorariosEnabled(bool enabled)
         {
             if (HorariosFlex is null) return;
@@ -305,18 +270,16 @@ namespace VillagioMichelinn
             NaoPaganteCount!.Text = naoPagante.ToString();
         }
 
-        // =================== Café / Combo Família ===================
+        // =================== CafÃ© ===================
         private void OnCafeCheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             if (sender == null) return;
 
-            // Café da manhã – único checkbox
             if (sender == CafeManhaCheckBox)
             {
                 if (e.Value)
                 {
                     SetMode(SelectedMode.CafeManha);
-                    CombofamiliaCheckBox.IsChecked = false;
                 }
                 else
                 {
@@ -324,25 +287,6 @@ namespace VillagioMichelinn
                         modoSelecionado = SelectedMode.None;
                 }
                 AtualizarTotal();
-                return;
-            }
-
-            // Combo Família (única opção)
-            if (sender == CombofamiliaCheckBox)
-            {
-                if (e.Value)
-                {
-                    SetMode(SelectedMode.ComboFamilia);
-                    ResetIngressos();
-                    ClearCafeManha();
-                }
-                else
-                {
-                    if (modoSelecionado == SelectedMode.ComboFamilia)
-                        modoSelecionado = SelectedMode.None;
-                }
-                AtualizarTotal();
-                return;
             }
         }
 
@@ -358,36 +302,22 @@ namespace VillagioMichelinn
                 case SelectedMode.Passeio:
                     expPasseio.IsEnabled = true;
                     expCafe.IsEnabled = false;
-                    expFamilia.IsEnabled = false;
 
-                    // Limpa outros pacotes
-                    ClearComboFamilia();
+                    // Limpa CafÃ©
                     ClearCafeManha();
                     break;
 
                 case SelectedMode.CafeManha:
                     expPasseio.IsEnabled = false;
                     expCafe.IsEnabled = true;
-                    expFamilia.IsEnabled = false;
 
                     ResetIngressos();
-                    ClearComboFamilia();
-                    break;
-
-                case SelectedMode.ComboFamilia:
-                    expPasseio.IsEnabled = false;
-                    expCafe.IsEnabled = false;
-                    expFamilia.IsEnabled = true;
-
-                    ResetIngressos();
-                    ClearCafeManha();
                     break;
 
                 case SelectedMode.None:
                 default:
                     expPasseio.IsEnabled = true;
                     expCafe.IsEnabled = true;
-                    expFamilia.IsEnabled = true;
                     break;
             }
 
@@ -407,11 +337,6 @@ namespace VillagioMichelinn
             if (CafeManhaCheckBox != null) CafeManhaCheckBox.IsChecked = false;
         }
 
-        private void ClearComboFamilia()
-        {
-            if (CombofamiliaCheckBox != null) CombofamiliaCheckBox.IsChecked = false;
-        }
-
         // =================== Total ===================
         private void AtualizarTotal()
         {
@@ -429,10 +354,6 @@ namespace VillagioMichelinn
                         total += precoCafeManha;
                     break;
 
-                case SelectedMode.ComboFamilia:
-                    total = precoComboFamilia;
-                    break;
-
                 case SelectedMode.None:
                 default:
                     total = 0m;
@@ -448,19 +369,16 @@ namespace VillagioMichelinn
             // Volta para estado neutro
             modoSelecionado = SelectedMode.None;
 
-            // Limpa seleções e reabilita grupos
+            // Limpa seleÃ§Ãµes e reabilita grupos
             ResetIngressos();
             ClearCafeManha();
-            ClearComboFamilia();
 
             expPasseio.IsEnabled = true;
             expCafe.IsEnabled = true;
-            expFamilia.IsEnabled = true;
 
             // Colapsa todos
             expPasseio.IsExpanded = false;
             expCafe.IsExpanded = false;
-            expFamilia.IsExpanded = false;
 
             AtualizarTotal();
         }
@@ -471,27 +389,27 @@ namespace VillagioMichelinn
             // Regras gerais
             if (selectedDayButton is null)
             {
-                await DisplayAlert("Atenção", "Escolha um dia no calendário.", "OK");
+                await DisplayAlert("AtenÃ§Ã£o", "Escolha um dia no calendÃ¡rio.", "OK");
                 return;
             }
             if (selectedHorarioButton is null)
             {
-                await DisplayAlert("Atenção", "Escolha um horário.", "OK");
+                await DisplayAlert("AtenÃ§Ã£o", "Escolha um horÃ¡rio.", "OK");
                 return;
             }
             if (modoSelecionado == SelectedMode.None)
             {
-                await DisplayAlert("Atenção", "Escolha um pacote: Passeio, Café da manhã ou Combo Família.", "OK");
+                await DisplayAlert("AtenÃ§Ã£o", "Escolha um pacote: Passeio ou CafÃ© da manhÃ£.", "OK");
                 return;
             }
 
-            // Validações por modo
+            // ValidaÃ§Ãµes por modo
             switch (modoSelecionado)
             {
                 case SelectedMode.Passeio:
                     if (adulto + meia <= 0)
                     {
-                        await DisplayAlert("Atenção", "Adicione pelo menos 1 ingresso pago (Adulto ou Meia).", "OK");
+                        await DisplayAlert("AtenÃ§Ã£o", "Adicione pelo menos 1 ingresso pago (Adulto ou Meia).", "OK");
                         return;
                     }
                     break;
@@ -499,15 +417,7 @@ namespace VillagioMichelinn
                 case SelectedMode.CafeManha:
                     if (CafeManhaCheckBox?.IsChecked != true)
                     {
-                        await DisplayAlert("Atenção", "Marque o Café da manhã.", "OK");
-                        return;
-                    }
-                    break;
-
-                case SelectedMode.ComboFamilia:
-                    if (CombofamiliaCheckBox?.IsChecked != true)
-                    {
-                        await DisplayAlert("Atenção", "Marque o Combo Família.", "OK");
+                        await DisplayAlert("AtenÃ§Ã£o", "Marque o CafÃ© da manhÃ£.", "OK");
                         return;
                     }
                     break;

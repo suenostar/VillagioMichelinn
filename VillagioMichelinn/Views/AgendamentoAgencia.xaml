@@ -2,8 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="VillagioMichelinn.Agendamento"
-             Title="Agendamento"
+             x:Class="VillagioMichelinn.AgendamentoAgencia"
+             Title="Agendamento Agência"
              BackgroundColor="White">
 
     <ScrollView>
@@ -15,7 +15,7 @@
                    HorizontalOptions="Center" />
 
             <!-- Título -->
-            <Label Text="Agendamento"    
+            <Label Text="Agendamento Agência"
                    FontSize="30"
                    FontFamily="CanvasInline" />
 
@@ -46,65 +46,64 @@
                         <VerticalStackLayout Spacing="10">
 
                             <!-- Cabeçalho do calendário -->
-
                             <Grid ColumnDefinitions="Auto,*,Auto" Padding="10">
                                 <!-- Botão Anterior -->
                                 <Button BackgroundColor="#D9BBAB"
-                                            WidthRequest="40"
-                                            HeightRequest="40"
-                                            CornerRadius="10"
-                                            BorderColor="Black"
-                                            BorderWidth="2"
-                                            Clicked="OnPreviousMonthClicked">
+                                        WidthRequest="40"
+                                        HeightRequest="40"
+                                        CornerRadius="10"
+                                        BorderColor="Black"
+                                        BorderWidth="2"
+                                        Clicked="OnPreviousMonthClicked">
 
                                     <Button.ImageSource>
-                                        <!-- Código do ícone chevron-left -->
+                                        <!-- Ícone chevron-left -->
                                         <FontImageSource 
-                                                Glyph="&#xF284;"
-                                                FontFamily="BootstrapIcons"
-                                                Size="24"
-                                                Color="Black"/>
+                                            Glyph="&#xF284;"
+                                            FontFamily="BootstrapIcons"
+                                            Size="24"
+                                            Color="Black"/>
                                     </Button.ImageSource>
                                 </Button>
 
                                 <!-- Mês -->
                                 <Label x:Name="MonthLabel"
-                                           FontFamily="CanvasInline"
-                                           Grid.Column="1"
-                                           HorizontalOptions="Center"
-                                           FontSize="30"
-                                           TextColor="Black"/>
+                                       FontFamily="CanvasInline"
+                                       Grid.Column="1"
+                                       HorizontalOptions="Center"
+                                       FontSize="30"
+                                       TextColor="Black"/>
 
                                 <!-- Botão Próximo -->
                                 <Button Grid.Column="2"
-                                            BackgroundColor="#D9BBAB"
-                                            WidthRequest="40"
-                                            HeightRequest="40"
-                                            CornerRadius="10"
-                                            BorderColor="Black"
-                                            BorderWidth="2"
-                                            Clicked="OnNextMonthClicked">
+                                        BackgroundColor="#D9BBAB"
+                                        WidthRequest="40"
+                                        HeightRequest="40"
+                                        CornerRadius="10"
+                                        BorderColor="Black"
+                                        BorderWidth="2"
+                                        Clicked="OnNextMonthClicked">
 
                                     <Button.ImageSource>
-                                        <!-- Código do ícone chevron-right -->
+                                        <!-- Ícone chevron-right -->
                                         <FontImageSource 
-                                                Glyph="&#xF285;"
-                                                FontFamily="BootstrapIcons"
-                                                Size="24"
-                                                Color="Black"/>
+                                            Glyph="&#xF285;"
+                                            FontFamily="BootstrapIcons"
+                                            Size="24"
+                                            Color="Black"/>
                                     </Button.ImageSource>
                                 </Button>
                             </Grid>
 
                             <!-- Cabeçalho dos dias -->
                             <Grid ColumnDefinitions="*,*,*,*,*,*,*">
-                                <Label Text="Dom" TextColor="Black" FontFamily="SourceSans" HorizontalOptions="Center" FontAttributes="Bold"/>
-                                <Label Text="Seg" TextColor="Black" FontFamily="SourceSans" Grid.Column="1" HorizontalOptions="Center" FontAttributes="Bold"/>
-                                <Label Text="Ter" TextColor="Black" FontFamily="SourceSans" Grid.Column="2" HorizontalOptions="Center" FontAttributes="Bold"/>
-                                <Label Text="Qua" TextColor="Black" FontFamily="SourceSans" Grid.Column="3" HorizontalOptions="Center" FontAttributes="Bold"/>
-                                <Label Text="Qui" TextColor="Black" FontFamily="SourceSans" Grid.Column="4" HorizontalOptions="Center" FontAttributes="Bold"/>
-                                <Label Text="Sex" TextColor="Black" FontFamily="SourceSans" Grid.Column="5" HorizontalOptions="Center" FontAttributes="Bold"/>
-                                <Label Text="Sáb" TextColor="Black" FontFamily="SourceSans" Grid.Column="6" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Dom" FontFamily="SourceSans" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Seg" FontFamily="SourceSans" Grid.Column="1" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Ter" FontFamily="SourceSans" Grid.Column="2" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Qua" FontFamily="SourceSans" Grid.Column="3" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Qui" FontFamily="SourceSans" Grid.Column="4" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Sex" FontFamily="SourceSans" Grid.Column="5" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Sáb" FontFamily="SourceSans" Grid.Column="6" HorizontalOptions="Center" FontAttributes="Bold"/>
                             </Grid>
 
                             <!-- Grid dos dias -->
@@ -195,7 +194,6 @@
 
                             <!-- Conteúdo dinâmico da safra -->
                             <Label x:Name="SafraLabel" 
-                                 
                                    FontFamily="SourceSans"
                                    FontSize="18"
                                    TextColor="Black"                                 
@@ -224,10 +222,6 @@
 
                 </VerticalStackLayout>
             </Border>
-
-            <!-- inico das modificações 06/12 00:30 -->
-
-
 
             <!-- Quantidade de Pessoas -->
             <Border BackgroundColor="#B77F61"
@@ -416,8 +410,6 @@
                                     </Border>
                                 </toolkit:Expander.Header>
 
-
-                                <!-- O Expander só pode ter UM filho: aqui é um Border -->
                                 <Border BackgroundColor="White"
                                         Stroke="Black"
                                         StrokeThickness="1"
@@ -425,13 +417,8 @@
                                         Padding="10"
                                         Margin="0,8,0,0">
 
-                                    <!-- O Border também só pode ter UM filho: aqui agrupamos tudo num VerticalStackLayout -->
                                     <VerticalStackLayout Spacing="1">
-
-                                        
-                                        
-                                        
-                                        <!-- Grupo 2: Café da manhã -->
+                                        <!-- Café da manhã -->
                                         <HorizontalStackLayout Spacing="10" Margin="0,0,0,-15">
                                             <Label Text="Café R$70,00"
                                                    FontFamily="SourceSans"
@@ -451,122 +438,6 @@
 
                             </toolkit:Expander>
 
-                            <!-- Combos (com Agência e Família dentro) -->
-                            <toolkit:Expander x:Name="expCombos" IsExpanded="False">
-                                <toolkit:Expander.Header>
-                                    <Border BackgroundColor="#F4F4F4" Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" Padding="10" Margin="0,8,0,0">
-                                        <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
-                                            <Label Text="Combo" FontFamily="CanvasInline" FontSize="20" TextColor="Black" VerticalOptions="Center"/>
-                                            <BoxView Grid.Column="1" HeightRequest="1" BackgroundColor="Transparent"/>
-                                            <Image Grid.Column="2" Source="chevron_down.png" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
-                                                <Image.Triggers>
-                                                    <DataTrigger TargetType="Image" Binding="{Binding Source={x:Reference expCombos}, Path=IsExpanded}" Value="True">
-                                                        <Setter Property="Rotation" Value="180"/>
-                                                    </DataTrigger>
-                                                </Image.Triggers>
-                                            </Image>
-                                        </Grid>
-                                    </Border>
-
-                                </toolkit:Expander.Header>
-
-                                <!-- Conteúdo expandido do Combos -->
-                                <VerticalStackLayout Spacing="12" Margin="0,8,0,0">
-
-                                    <!-- Família -->
-                                    <toolkit:Expander x:Name="expFamilia" IsExpanded="False">
-                                        <toolkit:Expander.Header>
-                                            <Border BackgroundColor="#F4F4F4"
-                                                    Stroke="Black"
-                                                    StrokeThickness="1"
-                                                    StrokeShape="RoundRectangle 10"
-                                                    Padding="10"
-                                                    Margin="0,8,0,0">
-                                                <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
-                                                    <Label Text="Passeio"
-                                                           FontFamily="CanvasInline"
-                                                           FontSize="20"
-                                                           TextColor="Black"
-                                                           VerticalOptions="Center" />
-                                                    <BoxView Grid.Column="1" HeightRequest="1" BackgroundColor="Transparent" />
-
-                                                    <!-- Seta que gira -->
-                                                    <Image Grid.Column="2"
-                                                           Source="chevron_down.png"
-                                                           WidthRequest="18"
-                                                           HeightRequest="18"
-                                                           VerticalOptions="Center">
-                                                        <Image.Triggers>
-                                                            <DataTrigger TargetType="Image" Binding="{Binding Source={x:Reference expFamilia}, Path=IsExpanded}" Value="True">
-                                                                <Setter Property="Rotation" Value="180" />
-                                                            </DataTrigger>
-                                                        </Image.Triggers>
-                                                    </Image>
-                                                </Grid>
-                                            </Border>
-                                        </toolkit:Expander.Header>
-
-                                        <!--Familia combo -->
-                                        <Border BackgroundColor="White"
-                                                Stroke="Black"
-                                                StrokeThickness="1"
-                                                StrokeShape="RoundRectangle 10"
-                                                Padding="10"
-                                                Margin="0,8,0,0">
-                                            
-                                            <VerticalStackLayout Spacing="1">
-
-                                                
-
-                                                <!-- Linha 1: Café caipira -->
-                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
-                                                    <Label Text="Café R$70,00"
-                                                           FontFamily="SourceSans" 
-                                                           FontSize="15"
-                                                           VerticalOptions="Center"
-                                                           TextColor="Black" />
-                                                </HorizontalStackLayout>
-
-                                                <!-- Linha 2: Taxa de passeio -->
-                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
-                                                    <Label Text="Taxa de passeio R$12,00"
-                                                           FontFamily="SourceSans"
-                                                           FontSize="15"
-                                                           VerticalOptions="Center"
-                                                           TextColor="Black" />
-                                                </HorizontalStackLayout>
-
-                                                <!-- Linha 3: Total -->
-                                                <HorizontalStackLayout Spacing="10" Margin="0,0,0,0">
-                                                    <Label Text="Total R$82,00"
-                                                           FontFamily="SourceSans"
-                                                           VerticalOptions="Center" 
-                                                           FontSize="15"
-                                                           TextColor="Black" />
-
-                                                    <!-- CheckBox -->
-                                                    <CheckBox x:Name="CombofamiliaCheckBox"
-                                                              Color="#D9BBAB"
-                                                              WidthRequest="48"
-                                                              HeightRequest="48"
-                                                              VerticalOptions="Center"
-                                                              CheckedChanged="OnCafeCheckedChanged" />
-                                                </HorizontalStackLayout>
-                                            </VerticalStackLayout>
-                                        </Border>
-
-                                        <!-- Só mostrar quando 'Combos' estiver expandido --> 
-                                        <toolkit:Expander.Triggers>
-                                            <DataTrigger TargetType="toolkit:Expander" Binding="{Binding Source={x:Reference expCombos}, Path=IsExpanded}" Value="False">
-                                                <Setter Property="IsVisible" Value="False" />
-                                            </DataTrigger>
-                                        </toolkit:Expander.Triggers>
-                                    </toolkit:Expander>
-
-                                </VerticalStackLayout>
-
-                            </toolkit:Expander>
-
                             <!-- Aviso -->
                             <Border BackgroundColor="LightGray"
                                     Stroke="Black"
@@ -575,7 +446,7 @@
                                     Padding="10"
                                     Margin="10,20,10,0"
                                     WidthRequest="300">
-                                
+
                                 <Label Text="Aviso: Criança de 0 a 5 anos não pagam e Criança de 06 a 12 anos pagam meia."
                                        FontSize="18"
                                        FontFamily="SourceSans"

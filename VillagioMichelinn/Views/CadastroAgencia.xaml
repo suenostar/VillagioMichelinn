@@ -61,7 +61,6 @@
 
                     <!-- Botão Cadastrar -->
                     <Button Text="Cadastrar"
-                            
                             FontSize="18"
                             FontFamily="SourceSans"
                             BackgroundColor="#8E7C94"

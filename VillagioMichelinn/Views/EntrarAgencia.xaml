@@ -3,8 +3,8 @@
              x:Class="VillagioMichelinn.EntrarAgencia"
              Title="Entrar Agência"
              BackgroundColor="White">
-
-    <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Center">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Center">
 
         <!-- Logo -->
         <Image Source="Logo_villagio_v2.png"
@@ -69,4 +69,5 @@
             </VerticalStackLayout>
         </Border>
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

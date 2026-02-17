@@ -84,6 +84,9 @@
 	  <MauiXaml Update="Views\Agendamento.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\AgendamentoAgencia.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\CadastroAgencia.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

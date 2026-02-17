@@ -35,7 +35,7 @@ namespace VillagioMichelinn
                 if (response.IsSuccessStatusCode)
                 {
                     await DisplayAlert("Sucesso", "Login realizado!", "OK");
-                    await Navigation.PushAsync(new Agendamento());
+                    await Navigation.PushAsync(new AgendamentoAgencia());
                 }
                 else
                 {
