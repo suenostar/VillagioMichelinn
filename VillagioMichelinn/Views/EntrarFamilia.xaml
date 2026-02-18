@@ -56,7 +56,7 @@
                         BorderWidth="2"/>
 
                     <!-- Botão ex -->
-                    <Button Text="Cadastrar"
+                    <Button Text="Teste1"
 FontFamily="SourceSans"
 FontSize="18"
 BackgroundColor="#8E7C94"
@@ -68,7 +68,7 @@ HorizontalOptions="Center"
 Clicked="OnTesteClicked"
 BorderColor="#445738"
 BorderWidth="2"/>
-                    <Button Text="Cadastrar"
+                    <Button Text="Teste2"
 FontFamily="SourceSans"
 FontSize="18"
 BackgroundColor="#8E7C94"

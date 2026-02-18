@@ -33,33 +33,33 @@
                        HorizontalOptions="Start" />
 
                 <!-- Card branco interno (conteúdo da reserva) -->
-                <Border
-                    BackgroundColor="White"
-                    Stroke="Black"
-                    StrokeThickness="1"
-                    StrokeShape="RoundRectangle 25"
-                    HeightRequest="130"
-                    Padding="15">
+                    <Border
+    BackgroundColor="White"
+    Stroke="Black"
+    StrokeThickness="1"
+    StrokeShape="RoundRectangle 25"
+    HeightRequest="130"
+    Padding="15">
 
-                    <Grid>
-                        <!-- Textos da reserva -->
-                        <VerticalStackLayout Spacing="8">
-                            <Label Text="nome de quem agendou" FontSize="18" TextColor="Black"/>
-                            <Label Text="data e horario" FontSize="18" TextColor="Black"/>
-                            <Label Text="valor" FontSize="18" TextColor="Black"/>
-                        </VerticalStackLayout>
+                        <Grid>
+                            <!-- Textos da reserva -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label x:Name="NomeReservaLabel" Text="nome de quem agendou" FontSize="18" TextColor="Black"/>
+                                <Label x:Name="DataHorarioLabel" Text="data e horario" FontSize="18" TextColor="Black"/>
+                                <Label x:Name="ValorLabel" Text="valor" FontSize="18" TextColor="Black"/>
+                            </VerticalStackLayout>
 
-                        <!-- Botão de menu (⋮) -->
-                        <Label Text="⋮" FontSize="28" TextColor="Black" HorizontalOptions="End" VerticalOptions="Start">
+                            <!-- Botão de menu (⋮) -->
+                            <Label Text="⋮" FontSize="28" TextColor="Black" HorizontalOptions="End" VerticalOptions="Start">
 
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnMenuClicked"/>
-                            </Label.GestureRecognizers>
-                        </Label>
-                    </Grid>
-                </Border>
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnMenuClicked"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+                    </Border>
 
-                <Border
+                    <Border
                     BackgroundColor="White"
                     Stroke="Black"
                     StrokeThickness="1"

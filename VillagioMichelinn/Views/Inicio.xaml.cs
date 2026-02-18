@@ -8,6 +8,24 @@ namespace VillagioMichelinn
         public Inicio()
         {
             InitializeComponent();
+            CarregarReserva();
+        }
+
+        private void CarregarReserva()
+        {
+            var reserva = ReservaStore.ReservaAtual;
+
+            if (reserva == null)
+            {
+                NomeReservaLabel.Text = "Nenhuma reserva encontrada";
+                DataHorarioLabel.Text = "-";
+                ValorLabel.Text = "-";
+                return;
+            }
+
+            NomeReservaLabel.Text = reserva.NomeCliente;
+            DataHorarioLabel.Text = reserva.ResumoDataHorario;
+            ValorLabel.Text = reserva.ResumoValor;
         }
 
         private async void OnNreservaClicked(object sender, EventArgs e)
@@ -33,7 +51,13 @@ namespace VillagioMichelinn
             await CancelCard.FadeTo(0, 120);
             CancelCard.IsVisible = false;
 
-            // TODO: remova a reserva aqui (backend/coleção) e atualize a lista
+            // Limpa a reserva atual ao cancelar
+            ReservaStore.ReservaAtual = null;
+
+            NomeReservaLabel.Text = "Reserva cancelada";
+            DataHorarioLabel.Text = "-";
+            ValorLabel.Text = "-";
+
             await DisplayAlert("Cancelado", "A reserva foi cancelada!", "OK");
         }
     }

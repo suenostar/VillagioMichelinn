@@ -30,6 +30,8 @@ namespace VillagioMichelinn
 
         private static readonly CultureInfo ptBR = new("pt-BR");
 
+        private decimal totalAtual = 0m;
+
         // Safra por mês
         private readonly Dictionary<string, string> safraPorMes = new(StringComparer.OrdinalIgnoreCase)
         {
@@ -360,6 +362,9 @@ namespace VillagioMichelinn
                     break;
             }
 
+            // 🔹 Guarda o total para ser usado no OnPagarClicked
+            totalAtual = total;
+
             TotalLabel!.Text = total.ToString("C", ptBR);
         }
 
@@ -423,8 +428,45 @@ namespace VillagioMichelinn
                     break;
             }
 
-            // OK -> segue para pagamento
-            await Navigation.PushAsync(new Pagamento());
+            // ========== MONTA OS DADOS DA RESERVA (AGÊNCIA) ==========
+            int dia = int.Parse(selectedDayButton.Text!);
+            var dataSelecionada = new DateTime(currentMonth.Year, currentMonth.Month, dia);
+            string horarioSelecionado = selectedHorarioButton.Text ?? string.Empty;
+
+            string tipoPacote = modoSelecionado switch
+            {
+                SelectedMode.Passeio => "Passeio (Agência)",
+                SelectedMode.CafeManha => "Café da manhã (Agência)",
+                _ => "Indefinido (Agência)"
+            };
+
+            // ⚠️ Aqui estamos usando a mesma classe Reserva de antes
+            // Certifique-se de que Reserva.cs e ReservaStore.cs já existem
+            var reserva = new Reserva
+            {
+                NomeCliente = "Agência", // se quiser depois pode ter um campo para nome da agência
+                Data = dataSelecionada,
+                Horario = horarioSelecionado,
+                TipoPacote = tipoPacote,
+                QtdeAdulto = adulto,
+                QtdeMeia = meia,
+                QtdeNaoPagante = naoPagante,
+                ValorTotal = totalAtual   // 🔹 vem do AtualizarTotal()
+            };
+
+            // Salva como a reserva "atual" a ser exibida na tela de Início
+            ReservaStore.ReservaAtual = reserva;
+
+            await DisplayAlert("Sucesso", "Reserva da agência registrada com sucesso!", "OK");
+
+            // 👉 Aqui você escolhe o fluxo:
+            // Se quiser IR DIRETO para a tela de Início:
+            await Navigation.PushAsync(new Inicio());
+
+            // Se quiser manter a tela de Pagamento antes de ir para Início,
+            // troque a linha acima por:
+            //
+            // await Navigation.PushAsync(new Pagamento());
         }
     }
 }
