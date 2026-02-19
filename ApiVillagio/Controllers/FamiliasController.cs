@@ -17,12 +17,10 @@ namespace ApiVillagio.Controllers
             _context = context;
         }
 
-        // GET: Todas as famílias
         [HttpGet]
         public async Task<IActionResult> GetAll() =>
             Ok(await _context.Familias.ToListAsync());
 
-        // GET: Família por ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -30,7 +28,6 @@ namespace ApiVillagio.Controllers
             return familia == null ? NotFound(new { message = "Família não encontrada" }) : Ok(familia);
         }
 
-        // POST: Cadastro de Família
         [HttpPost("cadastrar")]
         public async Task<IActionResult> Cadastrar([FromBody] Familia familia)
         {
@@ -42,16 +39,12 @@ namespace ApiVillagio.Controllers
                 return BadRequest(new { message = "Todos os campos são obrigatórios." });
             }
 
-
-            // familia.Senha = BCrypt.Net.BCrypt.HashPassword(familia.Senha);
-
             _context.Familias.Add(familia);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Família cadastrada com sucesso!", familia.Id });
         }
 
-        // PUT: Atualizar Família
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] Familia familia)
         {
@@ -62,7 +55,6 @@ namespace ApiVillagio.Controllers
             return Ok(new { message = "Família atualizada com sucesso!" });
         }
 
-        // DELETE: Remover Família
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

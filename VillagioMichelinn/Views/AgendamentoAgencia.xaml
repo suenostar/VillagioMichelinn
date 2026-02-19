@@ -417,22 +417,134 @@
                                         Padding="10"
                                         Margin="0,8,0,0">
 
-                                    <VerticalStackLayout Spacing="1">
-                                        <!-- Café da manhã -->
-                                        <HorizontalStackLayout Spacing="10" Margin="0,0,0,-15">
-                                            <Label Text="Café R$70,00"
+                                    <VerticalStackLayout Spacing="16">
+
+                                        <!-- Adulto Café -->
+                                        <HorizontalStackLayout Spacing="20">
+                                            <Label Text="Adulto (R$70,00):"
                                                    FontFamily="SourceSans"
                                                    FontSize="15"
                                                    VerticalOptions="Center"
-                                                   TextColor="Black" />
+                                                   TextColor="Black"/>
 
-                                            <CheckBox x:Name="CafeManhaCheckBox"
-                                                      Color="#D9BBAB"
-                                                      WidthRequest="48"
-                                                      HeightRequest="48"
-                                                      VerticalOptions="Center"
-                                                      CheckedChanged="OnCafeCheckedChanged" />
+                                            <Button WidthRequest="40" HeightRequest="40"
+                                                    BackgroundColor="White"
+                                                    BorderColor="Black" BorderWidth="1"
+                                                    Margin="35,0,0,0"
+                                                    Clicked="OnCafeAdultoMenos">
+                                                <Button.ImageSource>
+                                                    <FontImageSource
+                                                        Glyph="&#xF2EA;"
+                                                        FontFamily="BootstrapIcons"
+                                                        Size="20"
+                                                        Color="Black"/>
+                                                </Button.ImageSource>
+                                            </Button>
+
+                                            <Label x:Name="CafeAdultoCount"
+                                                   Text="0"
+                                                   FontSize="20"
+                                                   VerticalOptions="Center"
+                                                   TextColor="Black"/>
+
+                                            <Button WidthRequest="40" HeightRequest="40"
+                                                    BackgroundColor="White"
+                                                    BorderColor="Black" BorderWidth="1"
+                                                    Clicked="OnCafeAdultoMais">
+                                                <Button.ImageSource>
+                                                    <FontImageSource 
+                                                        Glyph="&#xF4FE;"
+                                                        FontFamily="BootstrapIcons"
+                                                        Size="20"
+                                                        Color="Black"/>
+                                                </Button.ImageSource>
+                                            </Button>
                                         </HorizontalStackLayout>
+
+                                        <!-- Meia Café -->
+                                        <HorizontalStackLayout Spacing="20">
+                                            <Label Text="Meia (R$35,00):"
+                                                   FontFamily="SourceSans"
+                                                   FontSize="15"
+                                                   VerticalOptions="Center"
+                                                   TextColor="Black"/>
+
+                                            <Button WidthRequest="40" HeightRequest="40"
+                                                    BackgroundColor="White"
+                                                    BorderColor="Black" BorderWidth="1"
+                                                    Margin="47,0,0,0"
+                                                    Clicked="OnCafeMeiaMenos">
+                                                <Button.ImageSource>
+                                                    <FontImageSource 
+                                                        Glyph="&#xF2EA;"
+                                                        FontFamily="BootstrapIcons"
+                                                        Size="20"
+                                                        Color="Black"/>
+                                                </Button.ImageSource>
+                                            </Button>
+
+                                            <Label x:Name="CafeMeiaCount"
+                                                   Text="0"
+                                                   FontSize="20"
+                                                   VerticalOptions="Center"
+                                                   TextColor="Black"/>
+
+                                            <Button WidthRequest="40" HeightRequest="40"
+                                                    BackgroundColor="White"
+                                                    BorderColor="Black" BorderWidth="1"
+                                                    Clicked="OnCafeMeiaMais">
+                                                <Button.ImageSource>
+                                                    <FontImageSource
+                                                        Glyph="&#xF4FE;"
+                                                        FontFamily="BootstrapIcons"
+                                                        Size="20"
+                                                        Color="Black"/>
+                                                </Button.ImageSource>
+                                            </Button>
+                                        </HorizontalStackLayout>
+
+                                        <!-- Não Pagante Café -->
+                                        <HorizontalStackLayout Spacing="20">
+                                            <Label Text="Não Pagante (R$00,00):"
+                                                   FontFamily="SourceSans"
+                                                   FontSize="15"
+                                                   VerticalOptions="Center"
+                                                   TextColor="Black"/>
+
+                                            <Button WidthRequest="40" HeightRequest="40"
+                                                    BackgroundColor="White"
+                                                    BorderColor="Black" BorderWidth="1"
+                                                    Margin="-3,0,0,0"
+                                                    Clicked="OnCafeNaoPaganteMenos">
+                                                <Button.ImageSource>
+                                                    <FontImageSource
+                                                        Glyph="&#xF2EA;"
+                                                        FontFamily="BootstrapIcons"
+                                                        Size="20"
+                                                        Color="Black"/>
+                                                </Button.ImageSource>
+                                            </Button>
+
+                                            <Label x:Name="CafeNaoPaganteCount"
+                                                   Text="0"
+                                                   FontSize="20"
+                                                   VerticalOptions="Center"
+                                                   TextColor="Black"/>
+
+                                            <Button WidthRequest="40" HeightRequest="40"
+                                                    BackgroundColor="White"
+                                                    BorderColor="Black" BorderWidth="1"
+                                                    Clicked="OnCafeNaoPaganteMais">
+                                                <Button.ImageSource>
+                                                    <FontImageSource
+                                                        Glyph="&#xF4FE;"
+                                                        FontFamily="BootstrapIcons"
+                                                        Size="20"
+                                                        Color="Black"/>
+                                                </Button.ImageSource>
+                                            </Button>
+                                        </HorizontalStackLayout>
+
                                     </VerticalStackLayout>
                                 </Border>
 

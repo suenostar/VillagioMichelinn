@@ -9,30 +9,27 @@ namespace VillagioMichelinn
 {
     public partial class AgendamentoAgencia : ContentPage
     {
-        // =================== Estado geral ===================
         private DateTime currentMonth = DateTime.Now;
         private Button? selectedDayButton = null;
         private Button? selectedHorarioButton = null;
-
-        // Limite de dias para agência: hoje até hoje + 15 dias
         private const int LimiteDiasAgencia = 15;
 
-        // Ingressos (Passeio)
+        // =================== Passeio ===================
         private int adulto = 0;
         private int meia = 0;
         private int naoPagante = 0;
-
         private decimal precoAdulto = 15m;
         private decimal precoMeia = 7.5m;
 
-        // Café da manhã (avulso)
-        private decimal precoCafeManha = 70m;
+        // =================== Café da manhã ===================
+        private int cafeAdulto = 0;
+        private int cafeMeia = 0;
+        private int cafeNaoPagante = 0;
+        private decimal precoCafeManha = 70m; // preço cheio do café
 
         private static readonly CultureInfo ptBR = new("pt-BR");
-
         private decimal totalAtual = 0m;
 
-        // Safra por mês
         private readonly Dictionary<string, string> safraPorMes = new(StringComparer.OrdinalIgnoreCase)
         {
             { "Janeiro", "Uva, Goiaba, Morango, Lichia" },
@@ -49,28 +46,21 @@ namespace VillagioMichelinn
             { "Dezembro", "Uva, Goiaba, Morango, Lichia" }
         };
 
-        // =================== Modo selecionado ===================
         private enum SelectedMode
         {
             None,
-            Passeio,    // Ingressos (adulto/meia)
-            CafeManha   // Café avulso
+            Passeio,
+            CafeManha
         }
 
         private SelectedMode modoSelecionado = SelectedMode.None;
 
         public AgendamentoAgencia()
         {
-            InitializeComponent();
-
-            // Monta calendário e UI dinâmica
+            InitializeComponent();             // <-- precisa existir por causa do XAML
             BuildCalendar(currentMonth);
             AtualizarSafra(currentMonth);
-
-            // Horários só habilitam após escolher o dia
             SetHorariosEnabled(false);
-
-            // Total inicial
             AtualizarTotal();
         }
 
@@ -82,13 +72,11 @@ namespace VillagioMichelinn
 
             var firstDay = new DateTime(month.Year, month.Month, 1);
             int daysInMonth = DateTime.DaysInMonth(month.Year, month.Month);
-            int startColumn = (int)firstDay.DayOfWeek; // Domingo=0..Sábado=6
-
+            int startColumn = (int)firstDay.DayOfWeek;
             int row = 0;
             int col = startColumn;
-
             var hoje = DateTime.Today;
-            var minDate = hoje.AddDays(LimiteDiasAgencia); // ex: 15 dias
+            var minDate = hoje.AddDays(LimiteDiasAgencia);
 
             for (int day = 1; day <= daysInMonth; day++)
             {
@@ -104,8 +92,6 @@ namespace VillagioMichelinn
                     FontSize = 12
                 };
 
-                // Regra da Agência:
-                // Só pode agendar a partir de minDate (hoje + 15 dias)
                 if (date.Date < minDate)
                 {
                     btn.BackgroundColor = Colors.LightGray;
@@ -113,7 +99,6 @@ namespace VillagioMichelinn
                     btn.IsEnabled = false;
                 }
 
-                // Destaque do dia atual (se ainda for clicável)
                 if (date.Date == hoje && btn.IsEnabled)
                 {
                     btn.BorderColor = Colors.DarkGreen;
@@ -122,7 +107,6 @@ namespace VillagioMichelinn
 
                 btn.Clicked += OnDayClicked;
                 CalendarGrid.Add(btn, col, row);
-
                 col++;
                 if (col > 6)
                 {
@@ -227,7 +211,7 @@ namespace VillagioMichelinn
             selectedHorarioButton = botaoClicado;
         }
 
-        // =================== Ingressos: + / - ===================
+        // =================== Passeio - Quantidades ===================
         private void OnAdultoMais(object sender, EventArgs e)
         {
             SetMode(SelectedMode.Passeio);
@@ -262,37 +246,66 @@ namespace VillagioMichelinn
 
         private void OnNaoPaganteMais(object sender, EventArgs e)
         {
+            SetMode(SelectedMode.Passeio);
             naoPagante++;
             NaoPaganteCount!.Text = naoPagante.ToString();
         }
 
         private void OnNaoPaganteMenos(object sender, EventArgs e)
         {
+            SetMode(SelectedMode.Passeio);
             if (naoPagante > 0) naoPagante--;
             NaoPaganteCount!.Text = naoPagante.ToString();
         }
 
-        // =================== Café ===================
-        private void OnCafeCheckedChanged(object sender, CheckedChangedEventArgs e)
+        // =================== Café - Quantidades ===================
+        private void OnCafeAdultoMais(object sender, EventArgs e)
         {
-            if (sender == null) return;
-
-            if (sender == CafeManhaCheckBox)
-            {
-                if (e.Value)
-                {
-                    SetMode(SelectedMode.CafeManha);
-                }
-                else
-                {
-                    if (modoSelecionado == SelectedMode.CafeManha)
-                        modoSelecionado = SelectedMode.None;
-                }
-                AtualizarTotal();
-            }
+            SetMode(SelectedMode.CafeManha);
+            cafeAdulto++;
+            CafeAdultoCount!.Text = cafeAdulto.ToString();
+            AtualizarTotal();
         }
 
-        // =================== Gerenciamento de modo/limpezas ===================
+        private void OnCafeAdultoMenos(object sender, EventArgs e)
+        {
+            SetMode(SelectedMode.CafeManha);
+            if (cafeAdulto > 0) cafeAdulto--;
+            CafeAdultoCount!.Text = cafeAdulto.ToString();
+            AtualizarTotal();
+        }
+
+        private void OnCafeMeiaMais(object sender, EventArgs e)
+        {
+            SetMode(SelectedMode.CafeManha);
+            cafeMeia++;
+            CafeMeiaCount!.Text = cafeMeia.ToString();
+            AtualizarTotal();
+        }
+
+        private void OnCafeMeiaMenos(object sender, EventArgs e)
+        {
+            SetMode(SelectedMode.CafeManha);
+            if (cafeMeia > 0) cafeMeia--;
+            CafeMeiaCount!.Text = cafeMeia.ToString();
+            AtualizarTotal();
+        }
+
+        private void OnCafeNaoPaganteMais(object sender, EventArgs e)
+        {
+            SetMode(SelectedMode.CafeManha);
+            cafeNaoPagante++;
+            CafeNaoPaganteCount!.Text = cafeNaoPagante.ToString();
+        }
+
+        private void OnCafeNaoPaganteMenos(object sender, EventArgs e)
+        {
+            SetMode(SelectedMode.CafeManha);
+            if (cafeNaoPagante > 0) cafeNaoPagante--;
+            CafeNaoPaganteCount!.Text = cafeNaoPagante.ToString();
+        }
+
+        // =================== Modo (Passeio x Café) ===================
         private void SetMode(SelectedMode novoModo)
         {
             if (modoSelecionado == novoModo) return;
@@ -304,15 +317,12 @@ namespace VillagioMichelinn
                 case SelectedMode.Passeio:
                     expPasseio.IsEnabled = true;
                     expCafe.IsEnabled = false;
-
-                    // Limpa Café
-                    ClearCafeManha();
+                    ResetCafe();
                     break;
 
                 case SelectedMode.CafeManha:
                     expPasseio.IsEnabled = false;
                     expCafe.IsEnabled = true;
-
                     ResetIngressos();
                     break;
 
@@ -328,15 +338,24 @@ namespace VillagioMichelinn
 
         private void ResetIngressos()
         {
-            adulto = 0; meia = 0; naoPagante = 0;
+            adulto = 0;
+            meia = 0;
+            naoPagante = 0;
+
             AdultoCount!.Text = "0";
             MeiaCount!.Text = "0";
             NaoPaganteCount!.Text = "0";
         }
 
-        private void ClearCafeManha()
+        private void ResetCafe()
         {
-            if (CafeManhaCheckBox != null) CafeManhaCheckBox.IsChecked = false;
+            cafeAdulto = 0;
+            cafeMeia = 0;
+            cafeNaoPagante = 0;
+
+            CafeAdultoCount!.Text = "0";
+            CafeMeiaCount!.Text = "0";
+            CafeNaoPaganteCount!.Text = "0";
         }
 
         // =================== Total ===================
@@ -349,11 +368,16 @@ namespace VillagioMichelinn
                 case SelectedMode.Passeio:
                     total += adulto * precoAdulto;
                     total += meia * precoMeia;
+                    // naoPagante não paga
                     break;
 
                 case SelectedMode.CafeManha:
-                    if (CafeManhaCheckBox?.IsChecked == true)
-                        total += precoCafeManha;
+                    total += cafeAdulto * precoCafeManha;
+
+                    // Meia café = metade do valor do café
+                    decimal precoCafeMeia = precoCafeManha / 2;
+                    total += cafeMeia * precoCafeMeia;
+                    // cafeNaoPagante não paga
                     break;
 
                 case SelectedMode.None:
@@ -362,26 +386,21 @@ namespace VillagioMichelinn
                     break;
             }
 
-            // 🔹 Guarda o total para ser usado no OnPagarClicked
             totalAtual = total;
-
             TotalLabel!.Text = total.ToString("C", ptBR);
         }
 
-        // =================== Trocar pacote (reset neutro) ===================
+        // =================== Trocar pacote ===================
         private void OnTrocarPacoteClicked(object sender, EventArgs e)
         {
-            // Volta para estado neutro
             modoSelecionado = SelectedMode.None;
 
-            // Limpa seleções e reabilita grupos
             ResetIngressos();
-            ClearCafeManha();
+            ResetCafe();
 
             expPasseio.IsEnabled = true;
             expCafe.IsEnabled = true;
 
-            // Colapsa todos
             expPasseio.IsExpanded = false;
             expCafe.IsExpanded = false;
 
@@ -391,7 +410,6 @@ namespace VillagioMichelinn
         // =================== Pagamento ===================
         private async void OnPagarClicked(object sender, EventArgs e)
         {
-            // Regras gerais
             if (selectedDayButton is null)
             {
                 await DisplayAlert("Atenção", "Escolha um dia no calendário.", "OK");
@@ -408,7 +426,6 @@ namespace VillagioMichelinn
                 return;
             }
 
-            // Validações por modo
             switch (modoSelecionado)
             {
                 case SelectedMode.Passeio:
@@ -420,15 +437,14 @@ namespace VillagioMichelinn
                     break;
 
                 case SelectedMode.CafeManha:
-                    if (CafeManhaCheckBox?.IsChecked != true)
+                    if (cafeAdulto + cafeMeia <= 0)
                     {
-                        await DisplayAlert("Atenção", "Marque o Café da manhã.", "OK");
+                        await DisplayAlert("Atenção", "Adicione pelo menos 1 Café pago (Adulto ou Meia).", "OK");
                         return;
                     }
                     break;
             }
 
-            // ========== MONTA OS DADOS DA RESERVA (AGÊNCIA) ==========
             int dia = int.Parse(selectedDayButton.Text!);
             var dataSelecionada = new DateTime(currentMonth.Year, currentMonth.Month, dia);
             string horarioSelecionado = selectedHorarioButton.Text ?? string.Empty;
@@ -440,33 +456,28 @@ namespace VillagioMichelinn
                 _ => "Indefinido (Agência)"
             };
 
-            // ⚠️ Aqui estamos usando a mesma classe Reserva de antes
-            // Certifique-se de que Reserva.cs e ReservaStore.cs já existem
+            // Aproveita os mesmos campos da Reserva tanto para passeio quanto para café
+            int qtdeAdultoFinal = modoSelecionado == SelectedMode.Passeio ? adulto : cafeAdulto;
+            int qtdeMeiaFinal = modoSelecionado == SelectedMode.Passeio ? meia : cafeMeia;
+            int qtdeNaoPaganteFinal = modoSelecionado == SelectedMode.Passeio ? naoPagante : cafeNaoPagante;
+
             var reserva = new Reserva
             {
-                NomeCliente = "Agência", // se quiser depois pode ter um campo para nome da agência
+                NomeCliente = "Agência",
                 Data = dataSelecionada,
                 Horario = horarioSelecionado,
                 TipoPacote = tipoPacote,
-                QtdeAdulto = adulto,
-                QtdeMeia = meia,
-                QtdeNaoPagante = naoPagante,
-                ValorTotal = totalAtual   // 🔹 vem do AtualizarTotal()
+                QtdeAdulto = qtdeAdultoFinal,
+                QtdeMeia = qtdeMeiaFinal,
+                QtdeNaoPagante = qtdeNaoPaganteFinal,
+                ValorTotal = totalAtual
             };
 
-            // Salva como a reserva "atual" a ser exibida na tela de Início
             ReservaStore.ReservaAtual = reserva;
 
-            await DisplayAlert("Sucesso", "Reserva da agência registrada com sucesso!", "OK");
+            await DisplayAlert("Sucesso", "Sua reserva será registrada após pagamento! ", "OK");
 
-            // 👉 Aqui você escolhe o fluxo:
-            // Se quiser IR DIRETO para a tela de Início:
-            await Navigation.PushAsync(new Inicio());
-
-            // Se quiser manter a tela de Pagamento antes de ir para Início,
-            // troque a linha acima por:
-            //
-            // await Navigation.PushAsync(new Pagamento());
+            await Navigation.PushAsync(new Pagamento());
         }
     }
 }

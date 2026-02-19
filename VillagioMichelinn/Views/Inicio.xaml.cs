@@ -51,7 +51,6 @@ namespace VillagioMichelinn
             await CancelCard.FadeTo(0, 120);
             CancelCard.IsVisible = false;
 
-            // Limpa a reserva atual ao cancelar
             ReservaStore.ReservaAtual = null;
 
             NomeReservaLabel.Text = "Reserva cancelada";

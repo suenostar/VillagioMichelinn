@@ -9,43 +9,25 @@ namespace VillagioMichelinn
 {
     public partial class Agendamento : ContentPage
     {
-        // =================== Estado geral ===================
         private DateTime currentMonth = DateTime.Now;
         private Button? selectedDayButton = null;
         private Button? selectedHorarioButton = null;
-
-        // Ingressos (Passeio)
         private int adulto = 0;
         private int meia = 0;
         private int naoPagante = 0;
-
         private decimal precoAdulto = 15m;
         private decimal precoMeia = 7.5m;
-
-        // Café da manhã (por pessoa)
         private decimal precoCafeManha = 70m;
-
-        // Combo Família (por pessoa - café + passeio)
-        // Valor base definido no XAML como "Total R$82,00"
         private decimal precoComboFamilia = 82m;
-
-        // Quantidades Café da manhã
         private int cafeAdulto = 0;
         private int cafeMeia = 0;
         private int cafeNaoPagante = 0;
-
-        // Quantidades Combo Família
         private int comboAdulto = 0;
         private int comboMeia = 0;
         private int comboNaoPagante = 0;
-
-        // Família: calendário bloqueia seg-sex
         private bool agendamentoFamilia = true;
-
         public static readonly CultureInfo ptBR = new("pt-BR");
-
         private decimal totalAtual = 0m;
-
         private const int AntecedenciaMinimaFamilia = 3;
 
         // Safra por mês
@@ -65,13 +47,12 @@ namespace VillagioMichelinn
             { "Dezembro", "Uva, Goiaba, Morango, Lichia" }
         };
 
-        // =================== Modo selecionado ===================
         private enum SelectedMode
         {
             None,
-            Passeio,        // Ingressos (adulto/meia)
-            CafeManha,      // Café avulso por pessoa
-            ComboFamilia    // Combo Família por pessoa
+            Passeio,        
+            CafeManha,      
+            ComboFamilia    
         }
 
         private SelectedMode modoSelecionado = SelectedMode.None;
@@ -79,13 +60,9 @@ namespace VillagioMichelinn
         public Agendamento()
         {
             InitializeComponent();
-
-            // Família por padrão (bloqueia seg-sex)
             agendamentoFamilia = true;
-
             BuildCalendar(currentMonth);
             AtualizarSafra(currentMonth);
-
             SetHorariosEnabled(false);
             AtualizarTotal();
         }
@@ -119,7 +96,6 @@ namespace VillagioMichelinn
                     FontSize = 12
                 };
 
-                // 1) Desabilita dias passados
                 if (date.Date < hoje)
                 {
                     btn.BackgroundColor = Colors.LightGray;
@@ -127,7 +103,6 @@ namespace VillagioMichelinn
                     btn.IsEnabled = false;
                 }
 
-                // 2) Família: bloquear seg-sex (só pode sábado e domingo)
                 if (agendamentoFamilia &&
                     date.DayOfWeek >= DayOfWeek.Monday &&
                     date.DayOfWeek <= DayOfWeek.Friday)
@@ -136,7 +111,6 @@ namespace VillagioMichelinn
                     btn.IsEnabled = false;
                 }
 
-                // 3) Regra antecedência 3 dias para finais de semana
                 if (agendamentoFamilia &&
                     (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) &&
                     btn.IsEnabled)
@@ -151,7 +125,6 @@ namespace VillagioMichelinn
                     }
                 }
 
-                // 4) Destaque do dia atual (se habilitado)
                 if (date.Date == hoje && btn.IsEnabled)
                 {
                     btn.BorderColor = Colors.DarkGreen;
@@ -160,7 +133,6 @@ namespace VillagioMichelinn
 
                 btn.Clicked += OnDayClicked;
                 CalendarGrid.Add(btn, col, row);
-
                 col++;
                 if (col > 6)
                 {
@@ -309,8 +281,7 @@ namespace VillagioMichelinn
             if (naoPagante > 0) naoPagante--;
             NaoPaganteCount!.Text = naoPagante.ToString();
         }
-
-        // =================== Café da manhã: + / - ===================
+ 
         private void OnCafeAdultoMais(object sender, EventArgs e)
         {
             SetMode(SelectedMode.CafeManha);
@@ -357,7 +328,6 @@ namespace VillagioMichelinn
             CafeNaoPaganteCount!.Text = cafeNaoPagante.ToString();
         }
 
-        // =================== Combo Família: + / - ===================
         private void OnComboAdultoMais(object sender, EventArgs e)
         {
             SetMode(SelectedMode.ComboFamilia);
@@ -404,7 +374,6 @@ namespace VillagioMichelinn
             ComboNaoPaganteCount!.Text = comboNaoPagante.ToString();
         }
 
-        // =================== Gerenciamento de modo/limpezas ===================
         private void SetMode(SelectedMode novoModo)
         {
             if (modoSelecionado == novoModo) return;
@@ -481,7 +450,6 @@ namespace VillagioMichelinn
             if (ComboNaoPaganteCount != null) ComboNaoPaganteCount.Text = "0";
         }
 
-        // =================== Total ===================
         private void AtualizarTotal()
         {
             decimal total = 0m;
@@ -494,14 +462,12 @@ namespace VillagioMichelinn
                     break;
 
                 case SelectedMode.CafeManha:
-                    // Café por pessoa: meia = metade do café
                     decimal precoCafeMeia = precoCafeManha / 2m;
                     total += cafeAdulto * precoCafeManha;
                     total += cafeMeia * precoCafeMeia;
                     break;
 
                 case SelectedMode.ComboFamilia:
-                    // Combo por pessoa: meia = metade do combo
                     decimal precoComboMeia = precoComboFamilia / 2m;
                     total += comboAdulto * precoComboFamilia;
                     total += comboMeia * precoComboMeia;
@@ -517,27 +483,21 @@ namespace VillagioMichelinn
             TotalLabel!.Text = total.ToString("C", ptBR);
         }
 
-        // =================== Trocar pacote (reset neutro) ===================
         private void OnTrocarPacoteClicked(object sender, EventArgs e)
         {
             modoSelecionado = SelectedMode.None;
-
             ResetIngressos();
             ClearCafeManha();
             ClearComboFamilia();
-
             expPasseio.IsEnabled = true;
             expCafe.IsEnabled = true;
             expFamilia.IsEnabled = true;
-
             expPasseio.IsExpanded = false;
             expCafe.IsExpanded = false;
             expFamilia.IsExpanded = false;
-
             AtualizarTotal();
         }
 
-        // =================== Pagamento ===================
         private async void OnPagarClicked(object sender, EventArgs e)
         {
             if (selectedDayButton is null)
@@ -556,7 +516,6 @@ namespace VillagioMichelinn
                 return;
             }
 
-            // Validações por modo
             switch (modoSelecionado)
             {
                 case SelectedMode.Passeio:
@@ -584,7 +543,6 @@ namespace VillagioMichelinn
                     break;
             }
 
-            // ================== MONTA A RESERVA ==================
             int dia = int.Parse(selectedDayButton.Text!);
             var dataSelecionada = new DateTime(currentMonth.Year, currentMonth.Month, dia);
             string horarioSelecionado = selectedHorarioButton.Text ?? "";
@@ -597,7 +555,6 @@ namespace VillagioMichelinn
                 _ => "Indefinido"
             };
 
-            // Mapeia quantidades de acordo com o modo
             int qtdAdulto = 0, qtdMeia = 0, qtdNaoPagante = 0;
 
             switch (modoSelecionado)
@@ -623,7 +580,7 @@ namespace VillagioMichelinn
 
             var reserva = new Reserva
             {
-                NomeCliente = "Cliente", // pode ligar em um Entry de nome depois
+                NomeCliente = "Cliente",
                 Data = dataSelecionada,
                 Horario = horarioSelecionado,
                 TipoPacote = tipoPacote,
@@ -635,8 +592,8 @@ namespace VillagioMichelinn
 
             ReservaStore.ReservaAtual = reserva;
 
-            await DisplayAlert("Sucesso", "Reserva registrada com sucesso!", "OK");
-            await Navigation.PushAsync(new Inicio());
+            await DisplayAlert("Sucesso", "Sua reserva será registrada após pagamento! ", "OK");
+            await Navigation.PushAsync(new Pagamento());
         }
     }
 }

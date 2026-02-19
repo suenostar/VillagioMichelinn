@@ -7,7 +7,6 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
-
     private async void OnFamiliaClicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new CadastroFamilia());

@@ -1,5 +1,5 @@
 ﻿
-using CommunityToolkit.Maui;            // << inicializa o MAUI Community Toolkit
+using CommunityToolkit.Maui;           
 using Microsoft.Extensions.Logging;
 using VillagioMichelinn;
 
