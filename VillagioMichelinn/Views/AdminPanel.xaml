@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VillagioMichelinn.AdminPanel"
+             Title="Painel Administrativo"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <!-- Título -->
+            <Label Text="Painel Administrativo"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="Black"/>
+
+            <!-- Card de Preços -->
+            <Border BackgroundColor="#F4F4F4"
+                    Stroke="Black"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20"
+                    Padding="15"
+                    Margin="0,0,0,10">
+
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Configuração de Preços"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="Black"/>
+
+                    <!-- Passeio -->
+                    <Border BackgroundColor="White"
+                            Stroke="Black"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 15"
+                            Padding="10">
+
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Passeio"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"/>
+
+                            <HorizontalStackLayout Spacing="10">
+                                <Label Text="Adulto (R$):"
+                                       VerticalOptions="Center"
+                                       TextColor="Black"/>
+                                <Entry x:Name="EntryPrecoAdulto"
+                                       Keyboard="Numeric"
+                                       WidthRequest="100"
+                                       Placeholder="15,00"
+                                       TextColor="Black"/>
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout Spacing="10">
+                                <Label Text="Meia (R$):"
+                                       VerticalOptions="Center"
+                                       TextColor="Black"/>
+                                <Entry x:Name="EntryPrecoMeia"
+                                       Keyboard="Numeric"
+                                       WidthRequest="100"
+                                       Placeholder="7,50"
+                                       TextColor="Black"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Café da manhã -->
+                    <Border BackgroundColor="White"
+                            Stroke="Black"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 15"
+                            Padding="10">
+
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Café da manhã"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"/>
+
+                            <HorizontalStackLayout Spacing="10">
+                                <Label Text="Adulto Café (R$):"
+                                       VerticalOptions="Center"
+                                       TextColor="Black"/>
+                                <Entry x:Name="EntryPrecoCafeAdulto"
+                                       Keyboard="Numeric"
+                                       WidthRequest="100"
+                                       Placeholder="70,00"
+                                       TextColor="Black"/>
+                            </HorizontalStackLayout>
+
+                            <Label x:Name="LabelPrecoCafeMeiaInfo"
+                                   Text="Meia Café será calculada como metade do Adulto."
+                                   FontSize="12"
+                                   TextColor="Gray"/>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Botão salvar -->
+                    <Button Text="Salvar Preços"
+                            BackgroundColor="#B77F61"
+                            TextColor="White"
+                            CornerRadius="20"
+                            HeightRequest="45"
+                            Clicked="OnSalvarPrecosClicked"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Card de Reservas (somente visual) -->
+            <Border BackgroundColor="#F4F4F4"
+                    Stroke="Black"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20"
+                    Padding="15">
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Reservas (somente visual)"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="Black"/>
+
+                    <CollectionView x:Name="ReservasCollection"
+                                    ItemsSource="{Binding Reservas}"
+                                    SelectionMode="None">
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BackgroundColor="White"
+                                        Stroke="Black"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 15"
+                                        Padding="10"
+                                        Margin="0,5">
+
+                                    <Grid ColumnDefinitions="*,Auto"
+                                          RowDefinitions="Auto,Auto,Auto">
+
+                                        <!-- Info da reserva -->
+                                        <Label Grid.Row="0" Grid.Column="0"
+                                               Text="{Binding Descricao}"
+                                               FontAttributes="Bold"
+                                               TextColor="Black"/>
+
+                                        <Label Grid.Row="1" Grid.Column="0"
+                                               Text="{Binding Detalhes}"
+                                               FontSize="12"
+                                               TextColor="Gray"/>
+
+                                        <Label Grid.Row="2" Grid.Column="0"
+                                               Text="{Binding Valor}"
+                                               FontSize="13"
+                                               TextColor="Black"/>
+
+                                        <!-- Botão Cancelar (somente visual) -->
+                                        <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="3"
+                                                Text="Cancelar"
+                                                BackgroundColor="#FFCCCC"
+                                                TextColor="Black"
+                                                CornerRadius="15"
+                                                HeightRequest="40"
+                                                WidthRequest="90"
+                                                Clicked="OnCancelarReservaVisualClicked"/>
+
+                                        <Button Text="Ir para Agendamento"
+        BackgroundColor="#B77F61"
+        TextColor="White"
+        CornerRadius="20"
+        HeightRequest="45"
+        Margin="0,10,0,0"
+        Clicked="OnIrAgendamentoClicked" />
+
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

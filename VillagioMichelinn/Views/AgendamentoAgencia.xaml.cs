@@ -14,21 +14,32 @@ namespace VillagioMichelinn
         private Button? selectedHorarioButton = null;
         private const int LimiteDiasAgencia = 15;
 
+
+
+
         // =================== Passeio ===================
         private int adulto = 0;
         private int meia = 0;
         private int naoPagante = 0;
-        private decimal precoAdulto = 15m;
-        private decimal precoMeia = 7.5m;
+
+        // Lê preços da configuração global (Painel Admin)
+        private decimal precoAdulto => PrecosConfig.PrecoAdultoPasseio;
+        private decimal precoMeia => PrecosConfig.PrecoMeiaPasseio;
 
         // =================== Café da manhã ===================
         private int cafeAdulto = 0;
         private int cafeMeia = 0;
         private int cafeNaoPagante = 0;
-        private decimal precoCafeManha = 70m; // preço cheio do café
+
+        // Lê preços da configuração global (Painel Admin)
+        private decimal precoCafeManha => PrecosConfig.PrecoCafeAdulto;
+        private decimal precoCafeManhaMeia => PrecosConfig.PrecoCafeMeia;
 
         private static readonly CultureInfo ptBR = new("pt-BR");
         private decimal totalAtual = 0m;
+
+
+
 
         private readonly Dictionary<string, string> safraPorMes = new(StringComparer.OrdinalIgnoreCase)
         {
@@ -371,14 +382,12 @@ namespace VillagioMichelinn
                     // naoPagante não paga
                     break;
 
+
                 case SelectedMode.CafeManha:
                     total += cafeAdulto * precoCafeManha;
-
-                    // Meia café = metade do valor do café
-                    decimal precoCafeMeia = precoCafeManha / 2;
-                    total += cafeMeia * precoCafeMeia;
-                    // cafeNaoPagante não paga
+                    total += cafeMeia * precoCafeManhaMeia;
                     break;
+
 
                 case SelectedMode.None:
                 default:

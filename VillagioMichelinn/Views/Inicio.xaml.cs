@@ -5,6 +5,10 @@ namespace VillagioMichelinn
 {
     public partial class Inicio : ContentPage
     {
+        // ========= SECRETO: controle de taps no logo =========
+        private int secretTapCount = 0;
+        private DateTime lastTapTime = DateTime.MinValue;
+
         public Inicio()
         {
             InitializeComponent();
@@ -58,6 +62,31 @@ namespace VillagioMichelinn
             ValorLabel.Text = "-";
 
             await DisplayAlert("Cancelado", "A reserva foi cancelada!", "OK");
+        }
+
+        // ========= TAP SECRETO NO LOGO =========
+        private async void OnLogoTapped(object sender, TappedEventArgs e)
+        {
+            var now = DateTime.Now;
+
+            // Se passaram mais de 2 segundos desde o último toque, zera o contador
+            if ((now - lastTapTime).TotalSeconds > 2)
+                secretTapCount = 0;
+
+            secretTapCount++;
+            lastTapTime = now;
+
+            // Quando chegar em 5 toques rápidos, abre o painel admin
+            if (secretTapCount >= 5)
+            {
+                secretTapCount = 0; // reseta para próxima vez
+
+                // Se quiser colocar senha, dá para adicionar aqui
+                // string senha = await DisplayPromptAsync("Admin", "Digite a senha:");
+                // if (senha != "1234") return;
+
+                await Navigation.PushAsync(new AdminPanel());
+            }
         }
     }
 }

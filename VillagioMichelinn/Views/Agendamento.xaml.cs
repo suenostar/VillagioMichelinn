@@ -12,19 +12,33 @@ namespace VillagioMichelinn
         private DateTime currentMonth = DateTime.Now;
         private Button? selectedDayButton = null;
         private Button? selectedHorarioButton = null;
+
+        // =================== Quantidades Passeio ===================
         private int adulto = 0;
         private int meia = 0;
         private int naoPagante = 0;
-        private decimal precoAdulto = 15m;
-        private decimal precoMeia = 7.5m;
-        private decimal precoCafeManha = 70m;
-        private decimal precoComboFamilia = 82m;
+
+        // Preços do Passeio (vindo do Painel Admin via PrecosConfig)
+        private decimal precoAdulto => PrecosConfig.PrecoAdultoPasseio;
+        private decimal precoMeia => PrecosConfig.PrecoMeiaPasseio;
+
+        // =================== Quantidades Café da Manhã ===================
         private int cafeAdulto = 0;
         private int cafeMeia = 0;
         private int cafeNaoPagante = 0;
+
+        // Preços do Café da manhã (vindo do Painel Admin)
+        private decimal precoCafeManha => PrecosConfig.PrecoCafeAdulto; // valor cheio
+        private decimal precoCafeManhaMeia => PrecosConfig.PrecoCafeMeia;   // metade do valor
+
+        // =================== Combo Família ===================
         private int comboAdulto = 0;
         private int comboMeia = 0;
         private int comboNaoPagante = 0;
+
+        private decimal precoComboFamilia = 82m;
+
+        // =================== Outros ===================
         private bool agendamentoFamilia = true;
         public static readonly CultureInfo ptBR = new("pt-BR");
         private decimal totalAtual = 0m;

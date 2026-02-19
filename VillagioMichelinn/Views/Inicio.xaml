@@ -9,11 +9,17 @@
     <VerticalStackLayout Spacing="10" Padding="20">
 
         <!-- Logo -->
-        <Image Source="Logo_villagio_v2.png"
-               HeightRequest="150"
-               HorizontalOptions="Center" />
+            <Image Source="Logo_villagio_v2.png"
+       HeightRequest="150"
+       HorizontalOptions="Center">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer
+            NumberOfTapsRequired="1"
+            Tapped="OnLogoTapped"/>
+                </Image.GestureRecognizers>
+            </Image>
 
-        <!-- Card marrom externo -->
+            <!-- Card marrom externo -->
         <Border
             BackgroundColor="#B77F61"
             Stroke="Black"
