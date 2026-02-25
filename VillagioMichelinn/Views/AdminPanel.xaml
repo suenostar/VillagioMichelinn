@@ -98,12 +98,20 @@
                     </Border>
 
                     <!-- Botão salvar -->
-                    <Button Text="Salvar Preços"
+                    <Button Text="Salvar Preços"         
                             BackgroundColor="#B77F61"
                             TextColor="White"
                             CornerRadius="20"
                             HeightRequest="45"
                             Clicked="OnSalvarPrecosClicked"/>
+
+                    <Button Text="Ir para Agendamento"
+BackgroundColor="#B77F61"
+TextColor="White"
+CornerRadius="20"
+HeightRequest="45"
+Margin="0,10,0,0"
+Clicked="OnIrAgendamentoClicked" />
                 </VerticalStackLayout>
             </Border>
 
@@ -151,25 +159,6 @@
                                                Text="{Binding Valor}"
                                                FontSize="13"
                                                TextColor="Black"/>
-
-                                        <!-- Botão Cancelar (somente visual) -->
-                                        <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="3"
-                                                Text="Cancelar"
-                                                BackgroundColor="#FFCCCC"
-                                                TextColor="Black"
-                                                CornerRadius="15"
-                                                HeightRequest="40"
-                                                WidthRequest="90"
-                                                Clicked="OnCancelarReservaVisualClicked"/>
-
-                                        <Button Text="Ir para Agendamento"
-        BackgroundColor="#B77F61"
-        TextColor="White"
-        CornerRadius="20"
-        HeightRequest="45"
-        Margin="0,10,0,0"
-        Clicked="OnIrAgendamentoClicked" />
-
                                     </Grid>
                                 </Border>
                             </DataTemplate>

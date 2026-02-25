@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using ApiVillagio.Data;
+using ApiVillagio.Models.DTOs;
 using ApiVillagio.Models.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiVillagio.Controllers
 {
@@ -9,49 +12,81 @@ namespace ApiVillagio.Controllers
     [Route("api/[controller]")]
     public class ReservasController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly DbContext _db;
 
-        public ReservasController(AppDbContext context)
+        public ReservasController(DbContext db) => _db = db;
+
+        private static bool TryCombineLocalDateTime(string isoDate, string time24, out DateTime dt)
         {
-            _context = context;
+            dt = default;
+            if (!Regex.IsMatch(isoDate ?? "", @"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$"))
+                return false;
+            if (!Regex.IsMatch(time24 ?? "", @"^([01]\d|2[0-3]):[0-5]\d$"))
+                return false;
+
+            return DateTime.TryParseExact($"{isoDate} {time24}", "yyyy-MM-dd HH:mm",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out dt);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() =>
-            Ok(await _context.Reservas.Include(r => r.Familia).ToListAsync());
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<IEnumerable<Reserva>>> Get([FromQuery] int? familiaId = null)
         {
-            var reserva = await _context.Reservas.Include(r => r.Familia)
-                .FirstOrDefaultAsync(r => r.Id == id);
-            return reserva == null ? NotFound() : Ok(reserva);
+            var query = _db.Reservas.Include(r => r.Familia).AsQueryable();
+            if (familiaId.HasValue)
+                query = query.Where(r => r.FamiliaId == familiaId.Value);
+
+            var list = await query
+                .OrderBy(r => r.DataReserva)
+                .ToListAsync();
+
+            return Ok(list);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Reserva reserva)
+        public async Task<IActionResult> Post([FromBody] CriarReservaRequest req, CancellationToken ct)
         {
-            _context.Reservas.Add(reserva);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = reserva.Id }, reserva);
+            if (req is null) return BadRequest("Payload vazio.");
+
+            if (!TryCombineLocalDateTime(req.Data, req.Horario, out var dataHoraLocal))
+                return BadRequest("Data/Horário inválidos. Use AAAA-MM-DD e HH:MM (24h).");
+
+            var familiaExiste = await _db.Familias.AnyAsync(f => f.Id == req.FamiliaId, ct);
+            if (!familiaExiste) return NotFound("Família não encontrada.");
+
+            var reserva = new Reserva
+            {
+                FamiliaId = req.FamiliaId,
+                DataReserva = dataHoraLocal
+            };
+
+            _db.Reservas.Add(reserva);
+
+            try
+            {
+                await _db.SaveChangesAsync(ct);
+            }
+            catch (DbUpdateException ex)
+            {
+                // Trata violação de índice único (duplicidade de FamiliaId+DataReserva)
+                if (ex.InnerException?.Message.Contains("UQ_Reservas_Familia_Data", StringComparison.OrdinalIgnoreCase) == true
+                    || ex.InnerException?.Message.Contains("IX_Reservas_FamiliaId_DataReserva", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    return Conflict("Já existe reserva para esta família neste dia/horário.");
+                }
+                throw;
+            }
+
+            return CreatedAtAction(nameof(Get), new { id = reserva.Id }, reserva);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Reserva reserva)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken ct)
         {
-            if (id != reserva.Id) return BadRequest();
-            _context.Entry(reserva).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var reserva = await _context.Reservas.FindAsync(id);
+            var reserva = await _db.Reservas.FindAsync(new object?[] { id }, ct);
             if (reserva == null) return NotFound();
-            _context.Reservas.Remove(reserva);
-            await _context.SaveChangesAsync();
+
+            _db.Reservas.Remove(reserva);
+            await _db.SaveChangesAsync(ct);
             return NoContent();
         }
     }

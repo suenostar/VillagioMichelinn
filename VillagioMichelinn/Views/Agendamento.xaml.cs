@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
+using VillagioMichelinn.Services;
 
 namespace VillagioMichelinn
 {
@@ -44,6 +46,27 @@ namespace VillagioMichelinn
         private decimal totalAtual = 0m;
         private const int AntecedenciaMinimaFamilia = 3;
 
+        // ======== VALIDADORES (ISO DATE e HH:MM) ========
+        private static readonly Regex RxIsoDate = new(@"^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$");
+        private static readonly Regex RxTime24 = new(@"^([01]\d|2[0-3]):[0-5]\d$");
+        private static bool IsValidIsoDate(string s) => !string.IsNullOrWhiteSpace(s) && RxIsoDate.IsMatch(s);
+        private static bool IsValidTime24(string s) => !string.IsNullOrWhiteSpace(s) && RxTime24.IsMatch(s);
+
+        private static bool TryCombineLocalDateTime(string isoDate, string time24, out DateTime localDateTime)
+        {
+            localDateTime = default;
+            if (!IsValidIsoDate(isoDate) || !IsValidTime24(time24)) return false;
+
+            if (DateTime.TryParseExact($"{isoDate} {time24}", "yyyy-MM-dd HH:mm",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
+            {
+                // dt terá Kind = Unspecified -> trate como horário local do dispositivo
+                localDateTime = dt;
+                return true;
+            }
+            return false;
+        }
+
         // Safra por mês
         private readonly Dictionary<string, string> safraPorMes = new(StringComparer.OrdinalIgnoreCase)
         {
@@ -64,9 +87,9 @@ namespace VillagioMichelinn
         private enum SelectedMode
         {
             None,
-            Passeio,        
-            CafeManha,      
-            ComboFamilia    
+            Passeio,
+            CafeManha,
+            ComboFamilia
         }
 
         private SelectedMode modoSelecionado = SelectedMode.None;
@@ -208,8 +231,13 @@ namespace VillagioMichelinn
             if (selectedDayButton != null)
             {
                 selectedDayButton.BackgroundColor = Colors.Yellow;
+
+                int dia = int.Parse(selectedDayButton.Text!);
+                var dataSelecionada = new DateTime(currentMonth.Year, currentMonth.Month, dia);
+                var dataIso = dataSelecionada.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
                 _ = DisplayAlert("Dia Selecionado",
-                    $"Você escolheu {selectedDayButton.Text}/{currentMonth.Month}/{currentMonth.Year}",
+                    $"Você escolheu {dataIso}",
                     "OK");
             }
 
@@ -295,7 +323,7 @@ namespace VillagioMichelinn
             if (naoPagante > 0) naoPagante--;
             NaoPaganteCount!.Text = naoPagante.ToString();
         }
- 
+
         private void OnCafeAdultoMais(object sender, EventArgs e)
         {
             SetMode(SelectedMode.CafeManha);
@@ -476,9 +504,9 @@ namespace VillagioMichelinn
                     break;
 
                 case SelectedMode.CafeManha:
-                    decimal precoCafeMeia = precoCafeManha / 2m;
+                    decimal precoCafeMeiaCalc = precoCafeManha / 2m;
                     total += cafeAdulto * precoCafeManha;
-                    total += cafeMeia * precoCafeMeia;
+                    total += cafeMeia * precoCafeMeiaCalc;
                     break;
 
                 case SelectedMode.ComboFamilia:
@@ -557,9 +585,31 @@ namespace VillagioMichelinn
                     break;
             }
 
+            // ======= Data e Hora no padrão exigido =======
             int dia = int.Parse(selectedDayButton.Text!);
             var dataSelecionada = new DateTime(currentMonth.Year, currentMonth.Month, dia);
+            string dataIso = dataSelecionada.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
             string horarioSelecionado = selectedHorarioButton.Text ?? "";
+            string horario24 = horarioSelecionado.Trim(); // já vem como "HH:MM"
+
+            // Validações reforçadas
+            if (!IsValidIsoDate(dataIso))
+            {
+                await DisplayAlert("Formato inválido", "Data deve ser AAAA-MM-DD (ISO 8601).", "OK");
+                return;
+            }
+            if (!IsValidTime24(horario24))
+            {
+                await DisplayAlert("Formato inválido", "Horário deve ser HH:MM (24h).", "OK");
+                return;
+            }
+
+            if (!TryCombineLocalDateTime(dataIso, horario24, out var dataHoraLocal))
+            {
+                await DisplayAlert("Erro", "Não foi possível combinar data e horário.", "OK");
+                return;
+            }
 
             string tipoPacote = modoSelecionado switch
             {
@@ -592,19 +642,30 @@ namespace VillagioMichelinn
                     break;
             }
 
+            // Resumo para o usuário confirmar
+            var resumo = $"Data: {dataIso}\nHorário: {horario24}\nPacote: {tipoPacote}\n" +
+                         $"Pessoas (Adulto/Meia/NP): {qtdAdulto}/{qtdMeia}/{qtdNaoPagante}\n" +
+                         $"Total: {totalAtual.ToString("C", ptBR)}";
+
+            bool confirmar = await DisplayAlert("Confirme seus dados", resumo, "Confirmar", "Voltar");
+            if (!confirmar) return;
+
             var reserva = new Reserva
             {
                 NomeCliente = "Cliente",
                 Data = dataSelecionada,
-                Horario = horarioSelecionado,
+                Horario = horario24,
                 TipoPacote = tipoPacote,
                 QtdeAdulto = qtdAdulto,
                 QtdeMeia = qtdMeia,
                 QtdeNaoPagante = qtdNaoPagante,
-                ValorTotal = totalAtual
+                ValorTotal = totalAtual,
+                DataHoraLocal = dataHoraLocal
             };
 
             ReservaStore.ReservaAtual = reserva;
+
+            
 
             await DisplayAlert("Sucesso", "Sua reserva será registrada após pagamento! ", "OK");
             await Navigation.PushAsync(new Pagamento());

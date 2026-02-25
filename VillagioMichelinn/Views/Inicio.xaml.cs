@@ -5,7 +5,7 @@ namespace VillagioMichelinn
 {
     public partial class Inicio : ContentPage
     {
-        // ========= SECRETO: controle de taps no logo =========
+      
         private int secretTapCount = 0;
         private DateTime lastTapTime = DateTime.MinValue;
 
