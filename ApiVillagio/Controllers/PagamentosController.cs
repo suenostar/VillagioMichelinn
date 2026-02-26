@@ -9,12 +9,14 @@ namespace ApiVillagio.Controllers
     [Route("api/[controller]")]
     public class PagamentosController : ControllerBase
     {
+
         private readonly AppDbContext _context;
 
         public PagamentosController(AppDbContext context)
         {
             _context = context;
         }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAll() =>

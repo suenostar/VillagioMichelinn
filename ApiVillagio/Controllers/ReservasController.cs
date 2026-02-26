@@ -12,9 +12,9 @@ namespace ApiVillagio.Controllers
     [Route("api/[controller]")]
     public class ReservasController : ControllerBase
     {
-        private readonly DbContext _db;
+        private readonly AppDbContext _db;
 
-        public ReservasController(DbContext db) => _db = db;
+        public ReservasController(AppDbContext db) => _db = db;
 
         private static bool TryCombineLocalDateTime(string isoDate, string time24, out DateTime dt)
         {

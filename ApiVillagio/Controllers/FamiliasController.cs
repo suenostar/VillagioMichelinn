@@ -10,12 +10,14 @@ namespace ApiVillagio.Controllers
     [Route("api/[controller]")]
     public class FamiliasController : ControllerBase
     {
+
         private readonly AppDbContext _context;
 
         public FamiliasController(AppDbContext context)
         {
             _context = context;
         }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAll() =>

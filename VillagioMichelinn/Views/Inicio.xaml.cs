@@ -9,28 +9,28 @@ namespace VillagioMichelinn
         private int secretTapCount = 0;
         private DateTime lastTapTime = DateTime.MinValue;
 
-        public Inicio()
-        {
-            InitializeComponent();
-            CarregarReserva();
-        }
+        //public Inicio()
+        //{
+        //    InitializeComponent();
+        //    CarregarReserva();
+        //}
 
-        private void CarregarReserva()
-        {
-            var reserva = ReservaStore.ReservaAtual;
+        //private void CarregarReserva()
+        //{
+        //    var reserva = ReservaStore.ReservaAtual;
 
-            if (reserva == null)
-            {
-                NomeReservaLabel.Text = "Nenhuma reserva encontrada";
-                DataHorarioLabel.Text = "-";
-                ValorLabel.Text = "-";
-                return;
-            }
+        //    if (reserva == null)
+        //    {
+        //        NomeReservaLabel.Text = "Nenhuma reserva encontrada";
+        //        DataHorarioLabel.Text = "-";
+        //        ValorLabel.Text = "-";
+        //        return;
+        //    }
 
-            NomeReservaLabel.Text = reserva.NomeCliente;
-            DataHorarioLabel.Text = reserva.ResumoDataHorario;
-            ValorLabel.Text = reserva.ResumoValor;
-        }
+        //    NomeReservaLabel.Text = reserva.NomeCliente;
+        //    DataHorarioLabel.Text = reserva.ResumoDataHorario;
+        //    ValorLabel.Text = reserva.ResumoValor;
+        //}
 
         private async void OnNreservaClicked(object sender, EventArgs e)
         {

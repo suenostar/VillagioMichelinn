@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiVillagio.Data
 {
-    public class DbContext : Microsoft.EntityFrameworkCore.DbContext
+    // Nome correto e sem conflito
+    public class AppDbContext : DbContext
     {
-        public DbContext(DbContextOptions<DbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Agencia> Agencias => Set<Agencia>();
         public DbSet<Familia> Familias => Set<Familia>();
@@ -50,13 +51,14 @@ namespace ApiVillagio.Data
                 e.HasKey(x => x.Id);
                 e.Property(x => x.Data)
                     .IsRequired()
-                    .HasColumnType("datetime2(0)"); 
+                    .HasColumnType("datetime2(0)");
+
                 e.HasOne(x => x.Agencia)
                     .WithMany(a => a.Agendamentos)
                     .HasForeignKey(x => x.AgenciaId)
                     .OnDelete(DeleteBehavior.Restrict);
 
-                
+                // Índice único Agencia + Data
                 e.HasIndex(x => new { x.AgenciaId, x.Data }).IsUnique();
             });
 
@@ -85,6 +87,7 @@ namespace ApiVillagio.Data
                     .HasForeignKey(x => x.FamiliaId)
                     .OnDelete(DeleteBehavior.Restrict);
 
+                // Índice único Família + DataReserva
                 e.HasIndex(x => new { x.FamiliaId, x.DataReserva }).IsUnique();
             });
         }
