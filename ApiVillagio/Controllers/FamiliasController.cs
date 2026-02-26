@@ -68,19 +68,19 @@ namespace ApiVillagio.Controllers
             return Ok(new { message = "Família removida com sucesso!" });
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] FamiliaLoginDto login)
-        {
-            if (string.IsNullOrWhiteSpace(login.Telefone) || string.IsNullOrWhiteSpace(login.Senha))
-                return BadRequest(new { message = "Telefone e Senha são obrigatórios." });
+		[HttpPost("login")]
+		public async Task<IActionResult> Login([FromBody] FamiliaLoginDto login)
+		{
+			if (string.IsNullOrWhiteSpace(login.Telefone) || string.IsNullOrWhiteSpace(login.Senha))
+				return BadRequest(new { message = "Telefone e Senha são obrigatórios." });
 
-            var familia = await _context.Familias
-                .FirstOrDefaultAsync(f => f.Telefone == login.Telefone && f.Senha == login.Senha);
+			var familia = await _context.Familias
+				.FirstOrDefaultAsync(f => f.Telefone == login.Telefone && f.Senha == login.Senha);
 
-            if (familia == null)
-                return Unauthorized(new { message = "Telefone ou senha inválidos." });
+			if (familia == null)
+				return Unauthorized(new { message = "Telefone ou senha inválidos." });
 
-            return Ok(new { message = "Login realizado com sucesso!", familia.Id, familia.NomeResponsavel });
-        }
-    }
+			return Ok(new { message = "Login realizado com sucesso!", familia.Id, familia.NomeResponsavel });
+		}
+	}
 }

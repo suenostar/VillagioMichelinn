@@ -9,11 +9,11 @@ namespace VillagioMichelinn
         private int secretTapCount = 0;
         private DateTime lastTapTime = DateTime.MinValue;
 
-        //public Inicio()
-        //{
-        //    InitializeComponent();
-        //    CarregarReserva();
-        //}
+        public Inicio()
+        {
+            InitializeComponent();
+            //CarregarReserva();
+        }
 
         //private void CarregarReserva()
         //{

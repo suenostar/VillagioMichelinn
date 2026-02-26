@@ -1,26 +1,39 @@
 ﻿using System.Net.Http.Json;
-using System.Threading.Tasks;
+using VillagioMichelinn.Models;
 
 namespace VillagioMichelinn.Services
 {
-    public sealed class ReservaService
-    {
-        // Ajuste para sua API:
-        // - Android emulador + Kestrel local → http://10.0.2.2:5211
-        // - Windows com API no mesmo host → http://localhost:5211
-        private const string BASE_URL = "http://10.0.2.2:5211";
+    public class ReservaApiService
+	{
+		private readonly HttpClient _http;
+		private const string BaseUrl = "https://villagiodb.runasp.net";
 
-        private readonly HttpClient _http;
+		public ReservaApiService()
+		{
+			_http = new HttpClient
+			{
+				BaseAddress = new Uri(BaseUrl)
+			};
+		}
 
-        public ReservaService(HttpClient? http = null)
-        {
-            _http = http ?? new HttpClient { BaseAddress = new Uri(BASE_URL) };
-        }
+		public async Task<(bool Sucesso, string Mensagem)> CriarReservaAsync(CriarReservaRequest req)
+		{
+			try
+			{
+				var response = await _http.PostAsJsonAsync("/api/Reservas", req);
 
-        public async Task CriarReservaAsync(CriarReservaRequest request)
-        {
-            var resp = await _http.PostAsJsonAsync("/reservas", request);
-            resp.EnsureSuccessStatusCode();
-        }
-    }
+				if (response.IsSuccessStatusCode)
+				{
+					return (true, "Reserva criada com sucesso.");
+				}
+
+				var erro = await response.Content.ReadAsStringAsync();
+				return (false, $"Erro da API: {response.StatusCode} - {erro}");
+			}
+			catch (Exception ex)
+			{
+				return (false, $"Falha ao conectar na API: {ex.Message}");
+			}
+		}
+	}
 }

@@ -19,46 +19,7 @@
                    FontSize="30"
                    FontFamily="CanvasInline" />
 
-            <!-- Card de Regras de Data/Hora -->
-            <Border BackgroundColor="#FFF8E1"
-                    Stroke="Black"
-                    StrokeThickness="1"
-                    StrokeShape="RoundRectangle 12"
-                    Padding="12"
-                    Margin="0,0,0,10">
-                <VerticalStackLayout Spacing="6">
-                    <Label Text="Por favor, informe os seguintes dados para registro no banco de dados:"
-                           FontFamily="SourceSans"
-                           FontAttributes="Bold"
-                           TextColor="Black"/>
-                    <Label Text="1. Data (formato obrigatório: AAAA-MM-DD)  Ex.: 2026-02-25"
-                           FontFamily="SourceSans"
-                           TextColor="Black"/>
-                    <Label Text="2. Horário (formato 24h obrigatório: HH:MM)  Ex.: 14:30"
-                           FontFamily="SourceSans"
-                           TextColor="Black"/>
-                    <Label Text="⚠️ Regras:"
-                           FontFamily="SourceSans"
-                           FontAttributes="Bold"
-                           TextColor="Black"
-                           Margin="0,6,0,0"/>
-                    <Label Text="- A data deve estar no formato ISO 8601 (AAAA-MM-DD)."
-                           FontFamily="SourceSans"
-                           TextColor="Black"/>
-                    <Label Text="- O horário deve estar no formato 24 horas (HH:MM)."
-                           FontFamily="SourceSans"
-                           TextColor="Black"/>
-                    <Label Text="- Não utilizar barras (/), apenas hífen (-) na data."
-                           FontFamily="SourceSans"
-                           TextColor="Black"/>
-                    <Label Text="- Não utilizar AM/PM."
-                           FontFamily="SourceSans"
-                           TextColor="Black"/>
-                    <Label Text="(opcional) Após o envio, os dados serão validados antes de serem salvos no banco."
-                           FontFamily="SourceSans"
-                           TextColor="Black"/>
-                </VerticalStackLayout>
-            </Border>
+            
 
             <!-- Card marrom principal (Calendário / Safra / Horários) -->
             <Border BackgroundColor="#B77F61"
